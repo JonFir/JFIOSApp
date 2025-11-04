@@ -15,11 +15,3 @@ struct ContentView_Previews: PreviewProvider {
         FirstModuleView<FirstModuleViewModelPrev>().environment(FirstModuleViewModelPrev())
     }
 }
-
-
-
-
-
-
-
-

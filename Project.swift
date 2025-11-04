@@ -30,14 +30,14 @@ let project = Project(
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Resources"),
             ],
             dependencies: [
-                .target(name: Modules.firstModule, status: .required),
-                .target(name: "\(Modules.firstModule)Impl", status: .required),
+                Modules.firstModule.apiTarget,
+                Modules.firstModule.implTarget,
             ]
         ),
     ] 
-        + module(name: Modules.firstModule)
+    + module(moduleInfo: Modules.firstModule)
 )
 
-enum Modules {
-    static let firstModule = "FirstModule"
+enum Modules: String, ModuleInfo {
+    case firstModule = "FirstModule"
 }

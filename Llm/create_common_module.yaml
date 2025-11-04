@@ -12,19 +12,19 @@ task:
           Добавь имя модуля в enum Modules в Project.swift
           ```swift
           enum Modules {
-            static let <module_name> = "<module_name>"
+            case <module_name> = "<capitalized_module_name>"
           }
           ```
       - action: "Регистрация модуля в Project"
         instruction: |
-          Используя функцию module(name: <module_name>), добавь модуль в Project.swift
+          Используя функцию module(moduleInfo: <module_name>), добавь модуль в Project.swift
           ```swift
           let project = Project(
             name: Constants.appName,
             targets: [
               ...
             ] 
-              + module(name: Modules.<module_name>)
+              + module(moduleInfo: Modules.<module_name>)
           )
           ```
           Имя модуля бери из enum Modules.
