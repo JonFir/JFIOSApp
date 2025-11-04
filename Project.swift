@@ -30,14 +30,25 @@ let project = Project(
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Resources"),
             ],
             dependencies: [
+                Modules.factory.implTarget,
                 Modules.firstModule.apiTarget,
-                Modules.firstModule.implTarget,
             ]
         ),
-    ] 
-    + module(moduleInfo: Modules.firstModule)
-    + module(moduleInfo: Modules.factory)
+    ]
+    + module(
+        moduleInfo: Modules.factory,
+        implDependencies: [
+            Dependencies.Swinject.target,
+        ] + Implementation.targets
+    )
+    + module(moduleInfo: Modules.firstModule, implDependencies: [Dependencies.Swinject.target])
 )
+
+enum Implementation {
+    static let targets = [
+        Modules.firstModule.implTarget,
+    ]
+}
 
 enum Modules: String, ModuleInfo {
     case firstModule = "FirstModule"
@@ -46,4 +57,12 @@ enum Modules: String, ModuleInfo {
 
 enum Dependencies: String {
     case Swinject = "Swinject"
+}
+
+
+
+extension Dependencies {
+    var target: TargetDependency {
+        .external(name: rawValue)
+    }
 }

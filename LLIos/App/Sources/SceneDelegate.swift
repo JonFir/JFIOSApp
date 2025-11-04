@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
-import FirstModuleImpl
+import FirstModule
+import FactoryImpl
 
 class SceneDelegate: NSObject, UISceneDelegate {
     private var window: UIWindow?
@@ -13,9 +14,9 @@ class SceneDelegate: NSObject, UISceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 
-        let factory = FirstModuleFactoryImpl()
+        let viewController = assembler.resolver.resolve(FirstModuleViewController.self)!
 
-        window.rootViewController = factory.makeFirstScreen(title: "Привет!")
+        window.rootViewController = viewController
         window.makeKeyAndVisible()
         self.window = window
     }
