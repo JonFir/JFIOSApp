@@ -11,11 +11,11 @@ let template = Template(
     ],
     items: [
         .string(
-            path: "\(Constants.modulesFolder)/\(nameAttribute)/Api/\(nameAttribute).swift",
+            path: "\(Constants.modulesFolder)/\(nameAttribute)/Api/Dummy.swift",
             contents: ""
         ),
         .string(
-            path: "\(Constants.modulesFolder)/\(nameAttribute)/Impl/\(nameAttribute).swift",
+            path: "\(Constants.modulesFolder)/\(nameAttribute)/Impl/Dummy.swift",
             contents: ""
         ),
         .string(
@@ -23,7 +23,7 @@ let template = Template(
             contents: ""
         ),
         .string(
-            path: "\(Constants.modulesFolder)/\(nameAttribute)/Tests/\(nameAttribute)Tests.swift",
+            path: "\(Constants.modulesFolder)/\(nameAttribute)/Tests/DummyTests.swift",
             contents: ""
         ),
     ]

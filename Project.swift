@@ -36,8 +36,14 @@ let project = Project(
         ),
     ] 
     + module(moduleInfo: Modules.firstModule)
+    + module(moduleInfo: Modules.factory)
 )
 
 enum Modules: String, ModuleInfo {
     case firstModule = "FirstModule"
+    case factory = "Factory"
+}
+
+enum Dependencies: String {
+    case Swinject = "Swinject"
 }
