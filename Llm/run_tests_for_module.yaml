@@ -1,0 +1,12 @@
+task:
+  - id: "run_tests_for_module"
+    action: "Запуск тестов для модуля"
+    instruction: |
+      Тесты запускаются только для необходимых модулей и через tuist.
+    steps:
+      - action: "Запуск тестов"
+        instruction: |
+          Запусти тесты с используя tuist и схему <module_name> и проанализируй результаты.
+          ```
+          tuist test <module_name>
+          ```

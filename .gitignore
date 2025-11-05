@@ -104,4 +104,4 @@ graph.png
 *.log
 
 .env
-
+.local_memory

@@ -42,17 +42,20 @@ let project = Project(
         ] + Implementation.targets
     )
     + module(moduleInfo: Modules.firstModule, implDependencies: [Dependencies.Swinject.target])
+    + module(moduleInfo: Modules.logger, implDependencies: [Dependencies.Swinject.target])
 )
 
 enum Implementation {
     static let targets = [
         Modules.firstModule.implTarget,
+        Modules.logger.implTarget,
     ]
 }
 
 enum Modules: String, ModuleInfo {
     case firstModule = "FirstModule"
     case factory = "Factory"
+    case logger = "Logger"
 }
 
 enum Dependencies: String {
