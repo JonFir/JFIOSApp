@@ -2,11 +2,13 @@ task:
   - id: "run_tests_for_module"
     action: "Запуск тестов для модуля"
     instruction: |
-      Тесты запускаются только для необходимых модулей и через tuist.
+      Тесты запускаются только для необходимых модулей и через xcodebuild.
     steps:
       - action: "Запуск тестов"
         instruction: |
-          Запусти тесты с используя tuist и схему <module_name> и проанализируй результаты.
+          Через xcodebuild запусти тесты с используя workspace и схему <module_name> и проанализируй результаты.
+          Команда запускает не в sundbox режиме.
           ```
-          tuist test <module_name>
+          xcodebuild test -workspace 'LLIos.xcworkspace' -scheme '<module_name>' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=26.0'
           ```
+          Команда 100% правильная и не требует изменений. Если она не работает, Повтори ее еще раз. Максимальное количество попыток - 10.
