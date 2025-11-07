@@ -4,7 +4,7 @@ import ProjectDescriptionHelpers
 let nameAttribute: Template.Attribute = .required("name")
 
 let template = Template(
-    description: "Custom template",
+    description: "Common module",
     attributes: [
         nameAttribute,
         .optional("platform", default: "ios"),
@@ -12,11 +12,11 @@ let template = Template(
     items: [
         .string(
             path: "\(Constants.modulesFolder)/\(nameAttribute)/Api/Dummy.swift",
-            contents: ""
+            contents: "//\n//  Dummy.swift"
         ),
         .string(
             path: "\(Constants.modulesFolder)/\(nameAttribute)/Impl/Dummy.swift",
-            contents: ""
+            contents: "//\n//  Dummy.swift"
         ),
         .string(
             path: "\(Constants.modulesFolder)/\(nameAttribute)/Resources/.gitkeep",
@@ -24,7 +24,7 @@ let template = Template(
         ),
         .string(
             path: "\(Constants.modulesFolder)/\(nameAttribute)/Tests/DummyTests.swift",
-            contents: ""
+            contents: "//\n//  DummyTests.swift"
         ),
     ]
 )
