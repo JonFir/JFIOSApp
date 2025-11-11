@@ -11,6 +11,9 @@ class SceneDelegate: NSObject, UISceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
+        #if QA
+        print("QA mode")
+        #endif
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 

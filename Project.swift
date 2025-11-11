@@ -3,6 +3,28 @@ import ProjectDescriptionHelpers
 
 let project = Project(
     name: Constants.appName,
+    settings: Settings.settings(
+        configurations: [
+            .debug(
+                name: .debug,
+                settings: [
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG"
+                ]
+            ),
+            .release(
+                name: Constants.qaConfigurationName,
+                settings: [
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "QA"
+                ]
+            ),
+            .release(
+                name: .release,
+                settings: [
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RELEASE"
+                ]
+            ),
+        ]
+    ),
     targets: [
         .target(
             name: Constants.appName,
@@ -42,7 +64,14 @@ let project = Project(
         ] + Implementation.targets
     )
     + module(moduleInfo: Modules.firstModule, implDependencies: [Dependencies.Swinject.target])
-    + module(moduleInfo: Modules.logger, implDependencies: [Dependencies.Swinject.target])
+    + module(moduleInfo: Modules.logger, implDependencies: [Dependencies.Swinject.target]),
+    schemes: [
+        Scheme.scheme(
+            name: "QA",
+            buildAction: BuildAction.buildAction(targets: [.target(Constants.appName)]),
+            runAction: RunAction.runAction(configuration: Constants.qaConfigurationName)
+        )
+    ]
 )
 
 enum Implementation {

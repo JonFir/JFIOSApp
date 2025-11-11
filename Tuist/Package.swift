@@ -6,7 +6,14 @@ import PackageDescription
     import ProjectDescriptionHelpers
 
     let packageSettings = PackageSettings(
-        productTypes: ["Swinject": Constants.remoteDependenciesType]
+        productTypes: [
+            "Swinject": Constants.remoteDependenciesType
+        ],
+        baseSettings: .settings(configurations: [
+            .debug(name: .debug),
+            .release(name: Constants.qaConfigurationName),
+            .release(name: .release),
+        ])
     )
 #endif
 
