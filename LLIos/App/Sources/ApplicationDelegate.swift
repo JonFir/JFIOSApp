@@ -1,4 +1,6 @@
 import UIKit
+import Logger
+import FactoryImpl
 
 class ApplicationDelegate: NSObject, UIApplicationDelegate {
 
@@ -7,7 +9,9 @@ class ApplicationDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
-        true
+        let logger = assembler.resolver.resolve(Logger.self)!
+        logger.info("application didFinishLaunchingWithOptions", category: .system, module: "App")
+        return true
     }
 
     func application(

@@ -23,5 +23,6 @@ public enum LogCategory: String {
     case domain = "Domain"
     case network = "Network"
     case routing = "Routing"
+    case system = "System"
 }
 

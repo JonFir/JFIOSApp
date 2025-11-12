@@ -54,6 +54,7 @@ let project = Project(
             dependencies: [
                 Modules.factory.implTarget,
                 Modules.firstModule.apiTarget,
+                Modules.logger.apiTarget,
             ]
         ),
     ]
