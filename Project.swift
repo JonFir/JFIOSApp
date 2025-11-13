@@ -4,6 +4,9 @@ import ProjectDescriptionHelpers
 let project = Project(
     name: Constants.appName,
     settings: Settings.settings(
+        base: [
+            "OTHER_LDFLAGS": "$(inherited) -ObjC",
+        ],
         configurations: [
             .debug(
                 name: .debug,
@@ -52,20 +55,13 @@ let project = Project(
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Resources"),
             ],
             dependencies: [
-                Modules.factory.implTarget,
                 Modules.firstModule.apiTarget,
                 Modules.logger.apiTarget,
-            ]
+            ] + Modules.allCases.map { $0.implTarget }
         ),
     ]
-    + module(
-        moduleInfo: Modules.factory,
-        implDependencies: [
-            Dependencies.Swinject.target,
-        ] + Implementation.targets
-    )
-    + module(moduleInfo: Modules.firstModule, implDependencies: [Dependencies.Swinject.target])
-    + module(moduleInfo: Modules.logger, implDependencies: [Dependencies.Swinject.target]),
+    + module(moduleInfo: Modules.firstModule)
+    + module(moduleInfo: Modules.logger),
     schemes: [
         Scheme.scheme(
             name: "QA",
@@ -75,21 +71,13 @@ let project = Project(
     ]
 )
 
-enum Implementation {
-    static let targets = [
-        Modules.firstModule.implTarget,
-        Modules.logger.implTarget,
-    ]
-}
-
-enum Modules: String, ModuleInfo {
+enum Modules: String, ModuleInfo, CaseIterable {
     case firstModule = "FirstModule"
-    case factory = "Factory"
     case logger = "Logger"
 }
 
 enum Dependencies: String {
-    case Swinject = "Swinject"
+    case factory = "FactoryKit"
 }
 
 

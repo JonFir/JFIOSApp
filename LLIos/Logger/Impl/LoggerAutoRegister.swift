@@ -1,13 +1,13 @@
-import Swinject
+import FactoryKit
 import Logger
 import UIKit
 
-public class LoggerAssembly: Assembly {
+public class LoggerAutoRegister: AutoRegistering {
 
     public init() {}
 
-    public func assemble(container: Container) {
-        container.register(Logger.self) { r in
+    public func autoRegister() {
+        Container.shared.logger.register {
             let logger = Logger()
             #if DEBUG
             logger.handlers = [

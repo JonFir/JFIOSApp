@@ -1,11 +1,9 @@
-//
-//  Logger.swift
-//  LLIos
-//
-//  Created by Evgeniy Yolchev on 05.11.2025.
-//
-
 import Foundation
+import FactoryKit
+
+extension Container {
+    public var logger: Factory<Logger?> { promised().singleton }
+}
 
 /// Main logging class that distributes log messages to registered handlers.
 ///

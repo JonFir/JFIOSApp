@@ -7,7 +7,7 @@ import PackageDescription
 
     let packageSettings = PackageSettings(
         productTypes: [
-            "Swinject": Constants.remoteDependenciesType
+            "FactoryKit": Constants.remoteDependenciesType
         ],
         baseSettings: .settings(configurations: [
             .debug(name: .debug),
@@ -20,6 +20,6 @@ import PackageDescription
 let package = Package(
     name: "test",
     dependencies: [
-        .package(url: "https://github.com/Swinject/Swinject.git", .upToNextMajor(from: "2.8.0"))
+        .package(url: "https://github.com/hmlongco/Factory.git", .upToNextMajor(from: "2.4.12"))
     ]
 )

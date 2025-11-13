@@ -1,6 +1,7 @@
 import FirstModule
 import SwiftUI
+import FactoryKit
 
-class FirstModuleViewControllerImpl: UIHostingController<AnyView>, FirstModuleViewController {
+class FirstModuleViewControllerImpl: UIHostingController<FirstModuleView>, FirstModuleViewController {
 
 }

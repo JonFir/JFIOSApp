@@ -16,7 +16,7 @@ public func module<Info: ModuleInfo>(
             buildableFolders: [
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Api"),
             ],
-            dependencies: apiDependencies
+            dependencies: apiDependencies + [.external(name: "FactoryKit")]
         ),
         .target(
             name: moduleInfo.implName,
@@ -28,7 +28,7 @@ public func module<Info: ModuleInfo>(
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Impl"),
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Resources"),
             ],
-            dependencies: implDependencies + [moduleInfo.apiTarget]
+            dependencies: implDependencies + [moduleInfo.apiTarget, .external(name: "FactoryKit")]
         ),
         .target(
             name: moduleInfo.testName,
