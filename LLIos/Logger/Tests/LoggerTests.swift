@@ -97,19 +97,18 @@ struct LoggerTests {
         let mockHandler = LoggerHandlerMock()
         let logger = Logger(handlers: [mockHandler])
         
-        async let debug = logger.debug("First", category: .ui, module: "Module1").result
-        async let info = logger.info("Second", category: .network, module: "Module2").result
-        async let warning = logger.warning("Third", category: .domain, module: "Module3").result
-        async let critical = logger.critical("Fourth", category: .routing, module: "Module4").result
+        let _ = await logger.debug("First", category: .ui, module: "Module1").result
+        let _ = await logger.info("Second", category: .network, module: "Module2").result
+        let _ = await logger.warning("Third", category: .domain, module: "Module3").result
+        let _ = await logger.critical("Fourth", category: .routing, module: "Module4").result
 
-        let _ = await (debug, info, warning, warning, critical)
-        
         let callCount = await mockHandler.logCallCount
         let entries = await mockHandler.loggedEntries
         
         #expect(callCount == 4)
         #expect(entries.count == 4)
-        
+
+
         #expect(entries[0].message == "First")
         #expect(entries[0].level == .debug)
         
