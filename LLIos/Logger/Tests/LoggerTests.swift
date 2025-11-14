@@ -5,141 +5,180 @@
 //  Created by Evgeniy Yolchev on 05.11.2025.
 //
 
-import XCTest
+import Testing
 @testable import Logger
 
-final class LoggerTests: XCTestCase {
+struct LoggerTests {
     
-    var sut: Logger!
-    var mockHandler: LoggerHandlerMock!
-    
-    override func setUp() {
-        super.setUp()
-        sut = Logger()
-        mockHandler = LoggerHandlerMock()
-        sut.handlers = [mockHandler]
+    @Test
+    func logsMessageWithCorrectMetadata() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
+        
+        await logger.info("Test message", category: .domain, module: "TestModule").value
+
+        let callCount = await mockHandler.logCallCount
+        let entries = await mockHandler.loggedEntries
+        
+        #expect(callCount == 1)
+        #expect(entries.first?.level == .info)
+        #expect(entries.first?.message == "Test message")
+        #expect(entries.first?.category == .domain)
+        #expect(entries.first?.module == "TestModule")
     }
     
-    override func tearDown() {
-        sut = nil
-        mockHandler = nil
-        super.tearDown()
-    }
-    
-    func testLogsMessageWithCorrectMetadata() {
-        sut.info("Test message", category: .domain, module: "TestModule")
+    @Test
+    func logsParameters() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
         
-        XCTAssertEqual(mockHandler.logCallCount, 1)
-        XCTAssertEqual(mockHandler.loggedEntries.first?.level, .info)
-        XCTAssertEqual(mockHandler.loggedEntries.first?.message, "Test message")
-        XCTAssertEqual(mockHandler.loggedEntries.first?.category, .domain)
-        XCTAssertEqual(mockHandler.loggedEntries.first?.module, "TestModule")
-    }
-    
-    func testLogsParameters() {
-        let parameters: [String: Any] = ["userId": 123, "userName": "John"]
+        let parameters: [String: any Sendable] = ["userId": 123, "userName": "John"]
         
-        sut.info("Test message", category: .domain, module: "TestModule", parameters: parameters)
+        await logger.info("Test message", category: .domain, module: "TestModule", parameters: parameters).value
+
+        let entries = await mockHandler.loggedEntries
         
-        guard let loggedEntry = mockHandler.loggedEntries.first else {
-            XCTFail("No entry logged")
+        guard let loggedEntry = entries.first else {
+            Issue.record("No entry logged")
             return
         }
         
-        XCTAssertEqual(loggedEntry.parameters["userId"] as? Int, 123)
-        XCTAssertEqual(loggedEntry.parameters["userName"] as? String, "John")
+        #expect(loggedEntry.parameters["userId"] as? Int == 123)
+        #expect(loggedEntry.parameters["userName"] as? String == "John")
     }
     
-    func testLogsFileLineFunction() {
-        sut.info("Test message", category: .ui, module: "TestModule")
+    @Test
+    func logsFileLineFunction() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
         
-        guard let loggedEntry = mockHandler.loggedEntries.first else {
-            XCTFail("No entry logged")
+        await logger.info("Test message", category: .ui, module: "TestModule").value
+        
+        let entries = await mockHandler.loggedEntries
+        
+        guard let loggedEntry = entries.first else {
+            Issue.record("No entry logged")
             return
         }
         
-        XCTAssertTrue(loggedEntry.file.contains("LoggerTests.swift"))
-        XCTAssertGreaterThan(loggedEntry.line, 0)
-        XCTAssertEqual(loggedEntry.function, "testLogsFileLineFunction()")
+        #expect(loggedEntry.file.contains("LoggerTests.swift"))
+        #expect(loggedEntry.line > 0)
+        #expect(loggedEntry.function == "logsFileLineFunction()")
     }
     
-    func testMultipleHandlersReceiveLog() {
-        let secondMockHandler = LoggerHandlerMock()
-        sut.handlers = [mockHandler, secondMockHandler]
+    @Test
+    func multipleHandlersReceiveLog() async {
+        let mockHandler1 = LoggerHandlerMock()
+        let mockHandler2 = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler1, mockHandler2])
         
-        sut.info("Test message", category: .ui, module: "TestModule")
+        await logger.info("Test message", category: .ui, module: "TestModule").value
         
-        XCTAssertEqual(mockHandler.logCallCount, 1)
-        XCTAssertEqual(secondMockHandler.logCallCount, 1)
-        XCTAssertEqual(mockHandler.loggedEntries.first?.message, "Test message")
-        XCTAssertEqual(secondMockHandler.loggedEntries.first?.message, "Test message")
+        let callCount1 = await mockHandler1.logCallCount
+        let callCount2 = await mockHandler2.logCallCount
+        let entries1 = await mockHandler1.loggedEntries
+        let entries2 = await mockHandler2.loggedEntries
+        
+        #expect(callCount1 == 1)
+        #expect(callCount2 == 1)
+        #expect(entries1.first?.message == "Test message")
+        #expect(entries2.first?.message == "Test message")
     }
     
-    func testNoHandlersDoesNotCrash() {
-        sut.handlers = []
+    @Test
+    func noHandlersDoesNotCrash() async {
+        let logger = Logger(handlers: [])
         
-        XCTAssertNoThrow(sut.info("Test message", category: .ui, module: "TestModule"))
+        await logger.info("Test message", category: .ui, module: "TestModule").value
     }
     
-    func testMultipleLogsAreStoredInOrder() {
-        sut.debug("First", category: .ui, module: "Module1")
-        sut.info("Second", category: .network, module: "Module2")
-        sut.warning("Third", category: .domain, module: "Module3")
-        sut.critical("Fourth", category: .routing, module: "Module4")
+    @Test
+    func multipleLogsAreStoredInOrder() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
         
-        XCTAssertEqual(mockHandler.logCallCount, 4)
-        XCTAssertEqual(mockHandler.loggedEntries.count, 4)
+        async let debug = logger.debug("First", category: .ui, module: "Module1").result
+        async let info = logger.info("Second", category: .network, module: "Module2").result
+        async let warning = logger.warning("Third", category: .domain, module: "Module3").result
+        async let critical = logger.critical("Fourth", category: .routing, module: "Module4").result
+
+        let _ = await (debug, info, warning, warning, critical)
         
-        XCTAssertEqual(mockHandler.loggedEntries[0].message, "First")
-        XCTAssertEqual(mockHandler.loggedEntries[0].level, .debug)
+        let callCount = await mockHandler.logCallCount
+        let entries = await mockHandler.loggedEntries
         
-        XCTAssertEqual(mockHandler.loggedEntries[1].message, "Second")
-        XCTAssertEqual(mockHandler.loggedEntries[1].level, .info)
+        #expect(callCount == 4)
+        #expect(entries.count == 4)
         
-        XCTAssertEqual(mockHandler.loggedEntries[2].message, "Third")
-        XCTAssertEqual(mockHandler.loggedEntries[2].level, .warning)
+        #expect(entries[0].message == "First")
+        #expect(entries[0].level == .debug)
         
-        XCTAssertEqual(mockHandler.loggedEntries[3].message, "Fourth")
-        XCTAssertEqual(mockHandler.loggedEntries[3].level, .critical)
+        #expect(entries[1].message == "Second")
+        #expect(entries[1].level == .info)
+        
+        #expect(entries[2].message == "Third")
+        #expect(entries[2].level == .warning)
+        
+        #expect(entries[3].message == "Fourth")
+        #expect(entries[3].level == .critical)
     }
     
-    func testOnLogClosureIsCalled() {
-        var closureCallCount = 0
-        var capturedMessage: String?
+    @Test
+    func onLogClosureIsCalled() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
         
-        mockHandler.onLog = { _, message, _, _, _, _, _, _ in
+        nonisolated(unsafe) var closureCallCount = 0
+        nonisolated(unsafe) var capturedMessage: String?
+
+        await mockHandler.setOnLog { _, message, _, _, _, _, _, _ in
             closureCallCount += 1
             capturedMessage = message
         }
         
-        sut.info("Test message", category: .ui, module: "TestModule")
+        await logger.info("Test message", category: .ui, module: "TestModule").value
         
-        XCTAssertEqual(closureCallCount, 1)
-        XCTAssertEqual(capturedMessage, "Test message")
+        #expect(closureCallCount == 1)
+        #expect(capturedMessage == "Test message")
     }
     
-    func testResetClearsMockState() {
-        sut.info("First message", category: .ui, module: "TestModule")
-        sut.info("Second message", category: .ui, module: "TestModule")
+    @Test
+    func resetClearsMockState() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
+
+        await logger.info("First message", category: .ui, module: "TestModule").value
+        await logger.info("Second message", category: .ui, module: "TestModule").value
         
-        XCTAssertEqual(mockHandler.logCallCount, 2)
-        XCTAssertEqual(mockHandler.loggedEntries.count, 2)
+        let callCountBefore = await mockHandler.logCallCount
+        let entriesBefore = await mockHandler.loggedEntries
         
-        mockHandler.reset()
+        #expect(callCountBefore == 2)
+        #expect(entriesBefore.count == 2)
         
-        XCTAssertEqual(mockHandler.logCallCount, 0)
-        XCTAssertEqual(mockHandler.loggedEntries.count, 0)
+        await mockHandler.reset()
+        
+        let callCountAfter = await mockHandler.logCallCount
+        let entriesAfter = await mockHandler.loggedEntries
+        
+        #expect(callCountAfter == 0)
+        #expect(entriesAfter.count == 0)
     }
     
-    func testEmptyParametersByDefault() {
-        sut.info("Test message", category: .ui, module: "TestModule")
+    @Test
+    func emptyParametersByDefault() async {
+        let mockHandler = LoggerHandlerMock()
+        let logger = Logger(handlers: [mockHandler])
         
-        guard let loggedEntry = mockHandler.loggedEntries.first else {
-            XCTFail("No entry logged")
+        await logger.info("Test message", category: .ui, module: "TestModule").value
+        
+        let entries = await mockHandler.loggedEntries
+        
+        guard let loggedEntry = entries.first else {
+            Issue.record("No entry logged")
             return
         }
         
-        XCTAssertTrue(loggedEntry.parameters.isEmpty)
+        #expect(loggedEntry.parameters.isEmpty)
     }
 }
-

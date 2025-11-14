@@ -5,8 +5,6 @@ import Logger
 import FactoryKit
 
 class SceneDelegate: NSObject, UISceneDelegate {
-    @Injected(\.mainWindow) var window
-    @Injected(\.logger) var logger
     @Injected(\.applicationInitializator) var applicationInitializator
 
     func scene(

@@ -7,7 +7,7 @@ public class FirstModuleAutoRegister: AutoRegistering {
     public init() {}
 
     public func autoRegister() {
-        Container.shared.firstModuleViewController.register {
+        Container.shared.firstModuleViewController.register { @MainActor in
             return FirstModuleViewControllerImpl(rootView: FirstModuleView())
         }
     }

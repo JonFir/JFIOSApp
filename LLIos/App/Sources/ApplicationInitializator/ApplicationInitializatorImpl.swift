@@ -10,7 +10,7 @@ extension Container {
 
 final class ApplicationInitializatorImpl: ApplicationInitializator {
 
-    @Injected(\.mainWindow) var window
+    @LazyInjected(\.mainWindow) var window
     @Injected(\.logger) var logger
 
     private var isShown: Bool = false
@@ -25,9 +25,14 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         logger?.info("Make main UIWindow", category: .ui, module: "App")
-        window.windowScene = (scene as? UIWindowScene)
-        window.rootViewController = Container.shared.firstModuleViewController()
-        window.makeKeyAndVisible()
+        if let windowScene = (scene as? UIWindowScene) {
+            let window = UIWindow(windowScene: windowScene)
+            Container.shared.mainWindow.register { window }
+            window.rootViewController = Container.shared.firstModuleViewController()
+            window.makeKeyAndVisible()
+        } else {
+            logger?.critical("Fail to make main UIWindow", category: .ui, module: "App", parameters: ["scene is": "\(scene)"])
+        }
     }
 
     func beforeShow(_ scene: UIScene) {

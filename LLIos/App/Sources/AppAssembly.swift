@@ -7,9 +7,7 @@ import FirstModuleImpl
 
 extension Container {
     @MainActor
-    public var mainWindow: Factory<UIWindow> { self { @MainActor in
-        return UIWindow()
-    }.singleton }
+    public var mainWindow: Factory<UIWindow?> { promised() }
 }
 
 private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [

@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 import PackageDescription
 
 #if TUIST
@@ -9,11 +9,16 @@ import PackageDescription
         productTypes: [
             "FactoryKit": Constants.remoteDependenciesType
         ],
-        baseSettings: .settings(configurations: [
-            .debug(name: .debug),
-            .release(name: Constants.qaConfigurationName),
-            .release(name: .release),
-        ])
+        baseSettings: .settings(
+            base: [
+                "SWIFT_VERSION": "6.2",
+            ],
+            configurations: [
+                .debug(name: .debug, settings: ["SWIFT_VERSION": "6.2"]),
+                .release(name: Constants.qaConfigurationName, settings: ["SWIFT_VERSION": "6.2"]),
+                .release(name: .release, settings: ["SWIFT_VERSION": "6.2"]),
+            ]
+        )
     )
 #endif
 

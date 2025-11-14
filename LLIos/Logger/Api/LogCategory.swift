@@ -18,7 +18,7 @@ import Foundation
 /// logger.info("User created", category: .domain, module: "UserService")
 /// logger.warning("Request timeout", category: .network, module: "APIClient")
 /// ```
-public enum LogCategory: String {
+public enum LogCategory: String, Sendable {
     case ui = "UI"
     case domain = "Domain"
     case network = "Network"

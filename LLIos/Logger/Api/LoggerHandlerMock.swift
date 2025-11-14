@@ -9,27 +9,31 @@ import Foundation
 
 /// Mock implementation of LoggerHandler for testing purposes.
 ///
-/// This mock captures all log calls and stores them for verification in tests.
-/// It provides access to call count and logged entries for assertions.
+/// This mock is implemented as an actor and captures all log calls for verification in tests.
+/// It provides access to call count and logged entries through isolated properties that require await.
+/// All interactions with the mock should be done asynchronously.
 ///
 /// Example usage:
 /// ```swift
 /// let mock = LoggerHandlerMock()
-/// let logger = Logger(handler: mock)
+/// let logger = Logger(handlers: [mock])
 ///
 /// logger.info("Test message", category: .ui, module: "TestModule")
+/// try? await Task.sleep(for: .milliseconds(10))
 ///
-/// XCTAssertEqual(mock.logCallCount, 1)
-/// XCTAssertEqual(mock.loggedEntries.first?.message, "Test message")
-/// XCTAssertEqual(mock.loggedEntries.first?.level, .info)
+/// let callCount = await mock.logCallCount
+/// let entries = await mock.loggedEntries
+/// #expect(callCount == 1)
+/// #expect(entries.first?.message == "Test message")
+/// #expect(entries.first?.level == .info)
 /// ```
-public final class LoggerHandlerMock: LoggerHandler {
-    
+public actor LoggerHandlerMock: LoggerHandler {
+
     /// Represents a single logged entry with all its parameters.
-    public struct LogEntry {
+    public struct LogEntry: Sendable {
         public let level: LogLevel
         public let message: String
-        public let parameters: [String: Any]
+        public let parameters: [String: Sendable]
         public let category: LogCategory
         public let module: String
         public let file: String
@@ -44,20 +48,27 @@ public final class LoggerHandlerMock: LoggerHandler {
     public private(set) var loggedEntries: [LogEntry] = []
     
     /// Optional closure that gets called on each log invocation.
-    public var onLog: ((LogLevel, String, [String: Any], LogCategory, String, String, Int, String) -> Void)?
+    private var onLog: ((LogLevel, String, [String: Any], LogCategory, String, String, Int, String) -> Void)?
     
     public init() {}
+    
+    /// Sets the closure that will be called on each log invocation.
+    ///
+    /// - Parameter closure: The closure to be called when log method is invoked
+    public func setOnLog(_ closure: (@Sendable (LogLevel, String, [String: Sendable], LogCategory, String, String, Int, String) -> Void)?) {
+        onLog = closure
+    }
     
     public func log(
         level: LogLevel,
         message: String,
-        parameters: [String: Any],
+        parameters: [String: Sendable],
         category: LogCategory,
         module: String,
         file: String,
         line: Int,
         function: String
-    ) {
+    ) async {
         logCallCount += 1
         
         let entry = LogEntry(
@@ -80,7 +91,7 @@ public final class LoggerHandlerMock: LoggerHandler {
     public func reset() {
         logCallCount = 0
         loggedEntries.removeAll()
-        onLog = nil
+        setOnLog(nil)
     }
 }
 

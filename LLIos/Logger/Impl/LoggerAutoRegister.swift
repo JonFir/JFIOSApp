@@ -8,21 +8,25 @@ public class LoggerAutoRegister: AutoRegistering {
 
     public func autoRegister() {
         Container.shared.logger.register {
-            let logger = Logger()
             #if DEBUG
-            logger.handlers = [
-                OSLoggerHandler(subsystem: Bundle.main.bundleIdentifier ?? "", category: "app_logs")
-            ]
+            return Logger(
+                handlers: [
+                    OSLoggerHandler(subsystem: Bundle.main.bundleIdentifier ?? "", category: "app_logs")
+                ]
+            )
             #elseif QA
-            logger.handlers = [
-                FileLoggerHandler()
-            ]
-            #elseif RELEASE
-            logger.handlers = [
-                ServerLoggerHandler()
-            ]
+            return Logger(
+                handlers: [
+                    FileLoggerHandler()
+                ]
+            )
+            #else
+            return Logger(
+                handlers: [
+                    ServerLoggerHandler()
+                ]
+            )
             #endif
-            return logger
         }
     }
 }

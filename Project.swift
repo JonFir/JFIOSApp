@@ -5,6 +5,7 @@ let project = Project(
     name: Constants.appName,
     settings: Settings.settings(
         base: [
+            "SWIFT_VERSION": "6.2",
             "OTHER_LDFLAGS": "$(inherited) -ObjC",
         ],
         configurations: [
@@ -60,7 +61,7 @@ let project = Project(
             ] + Modules.allCases.map { $0.implTarget }
         ),
     ]
-    + module(moduleInfo: Modules.firstModule)
+    + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
     + module(moduleInfo: Modules.logger),
     schemes: [
         Scheme.scheme(

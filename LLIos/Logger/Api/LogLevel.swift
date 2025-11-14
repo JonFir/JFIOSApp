@@ -14,7 +14,7 @@ import Foundation
 /// - `warning`: Warning messages for potentially harmful situations
 /// - `info`: Informational messages for general application flow
 /// - `debug`: Detailed debug information for development
-public enum LogLevel {
+public enum LogLevel: Sendable {
     case critical
     case warning
     case info

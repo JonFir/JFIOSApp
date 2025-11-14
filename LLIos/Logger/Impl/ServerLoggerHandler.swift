@@ -4,7 +4,7 @@ final class ServerLoggerHandler: LoggerHandler {
     func log(
         level: LogLevel,
         message: String,
-        parameters: [String : Any],
+        parameters: [String: Sendable],
         category: LogCategory,
         module: String,
         file: String,
