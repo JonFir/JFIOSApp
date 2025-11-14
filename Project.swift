@@ -58,7 +58,7 @@ let project = Project(
             dependencies: [
                 Modules.firstModule.apiTarget,
                 Modules.logger.apiTarget,
-            ] + Modules.allCases.map { $0.implTarget }
+            ] + Modules.allCases.map(\.implTarget)
         ),
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])

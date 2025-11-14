@@ -17,26 +17,17 @@ task:
           ```
       - action: "Регистрация модуля в Project"
         instruction: |
-          Используя функцию module(moduleInfo: <module_name>), добавь модуль в Project.swift, сразу добавь в зависимости Swinject.
+          Используя функцию module(moduleInfo: <module_name>), добавь модуль в Project.swift.
           ```swift
           let project = Project(
             name: Constants.appName,
             targets: [
               ...
             ] 
-              + module(moduleInfo: Modules.<module_name>, implDependencies: [Dependencies.Swinject.target])
+              + module(moduleInfo: Modules.<module_name>)
           )
           ```
           Имя модуля бери из enum Modules.
-      - action: "Регистрация модуля в Implementation"
-        instruction: |
-          Добавь модуль в enum Implementation в Project.swift
-          ```swift
-          enum Implementation {
-            static let targets = [
-              Modules.<module_name>.implTarget,
-            ]
-          }
       - action: "Создание модуля в проекте"
         instruction: |
           Вызови команду `tuist generate`, чтобы создать модуль в проекте.
