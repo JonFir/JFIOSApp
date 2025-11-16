@@ -63,7 +63,10 @@ let project = Project(
         ),
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
-    + module(moduleInfo: Modules.logger, implDependencies: [Dependencies.appMetricaCore.target]),
+    + module(moduleInfo: Modules.logger, implDependencies: [
+        Dependencies.appMetricaCore.target,
+        Dependencies.appMetricaCrashes.target,
+    ]),
     schemes: [
         Scheme.scheme(
             name: "QA",
@@ -81,6 +84,7 @@ enum Modules: String, ModuleInfo, CaseIterable {
 enum Dependencies: String, CaseIterable {
     case factory = "FactoryKit"
     case appMetricaCore = "AppMetricaCore"
+    case appMetricaCrashes = "AppMetricaCrashes"
 }
 
 
