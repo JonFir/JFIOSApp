@@ -19,7 +19,7 @@ public class LoggerAutoRegister: AutoRegistering {
         #else
         let handler = ServerLoggerHandler()
         handlers.append(handler)
-        Container.shared.appMetricaRegisterTask.register { AppMetricaRegisterTaskImpl() }
+        Container.shared.appMetricaRegisterTask.register { AppMetricaRegisterTask() }
         #endif
         Container.shared.logger.register { [handlers] in
             return Logger(

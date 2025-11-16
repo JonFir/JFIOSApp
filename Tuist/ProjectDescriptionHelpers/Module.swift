@@ -17,9 +17,7 @@ public func module<Info: ModuleInfo>(
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Api"),
             ],
             dependencies: apiDependencies + [.external(name: "FactoryKit")],
-            settings: .settings(
-                base: ["DEBUG_INFORMATION_FORMAT": "dwarf"]
-            )
+            settings: .settings()
         ),
         .target(
             name: moduleInfo.implName,
@@ -32,9 +30,7 @@ public func module<Info: ModuleInfo>(
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Resources"),
             ],
             dependencies: implDependencies + [moduleInfo.apiTarget, .external(name: "FactoryKit")],
-            settings: .settings(
-                base: ["DEBUG_INFORMATION_FORMAT": "dwarf"]
-            )
+            settings: .settings()
         ),
         .target(
             name: moduleInfo.testName,
@@ -49,9 +45,7 @@ public func module<Info: ModuleInfo>(
                 moduleInfo.apiTarget,
                 moduleInfo.implTarget,
             ],
-            settings: .settings(
-                base: ["DEBUG_INFORMATION_FORMAT": "dwarf"]
-            )
+            settings: .settings()
         )
     ]
 }

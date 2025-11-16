@@ -7,6 +7,7 @@ let project = Project(
         base: [
             "SWIFT_VERSION": "6.2",
             "OTHER_LDFLAGS": "$(inherited) -ObjC",
+            "CLANG_ENABLE_EXPLICIT_MODULES": false,
         ],
         configurations: [
             .debug(
@@ -58,6 +59,7 @@ let project = Project(
             dependencies: [
                 Modules.firstModule.apiTarget,
                 Modules.logger.apiTarget,
+                Modules.settings.apiTarget,
             ]
                 + Modules.allCases.map(\.implTarget)
         ),
@@ -66,7 +68,9 @@ let project = Project(
     + module(moduleInfo: Modules.logger, implDependencies: [
         Dependencies.appMetricaCore.target,
         Dependencies.appMetricaCrashes.target,
-    ]),
+        Modules.settings.apiTarget,
+    ])
+    + module(moduleInfo: Modules.settings),
     schemes: [
         Scheme.scheme(
             name: "QA",
@@ -79,6 +83,7 @@ let project = Project(
 enum Modules: String, ModuleInfo, CaseIterable {
     case firstModule = "FirstModule"
     case logger = "Logger"
+    case settings = "Settings"
 }
 
 enum Dependencies: String, CaseIterable {

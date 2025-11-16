@@ -13,15 +13,12 @@ import PackageDescription
             configurations: [
                 .debug(name: .debug, settings: [
                     "CLANG_ENABLE_EXPLICIT_MODULES": false,
-                    "DEBUG_INFORMATION_FORMAT": "dwarf",
                 ]),
                 .release(name: Constants.qaConfigurationName, settings: [
                     "CLANG_ENABLE_EXPLICIT_MODULES": false,
-                    "DEBUG_INFORMATION_FORMAT": "dwarf",
                 ]),
                 .release(name: .release, settings: [
                     "CLANG_ENABLE_EXPLICIT_MODULES": false,
-                    "DEBUG_INFORMATION_FORMAT": "dwarf",
                 ]),
             ]
         ),

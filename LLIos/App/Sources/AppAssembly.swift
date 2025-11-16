@@ -4,6 +4,8 @@ import FirstModule
 import FactoryKit
 import LoggerImpl
 import FirstModuleImpl
+import Settings
+import SettingsImpl
 
 extension Container {
     @MainActor
@@ -13,6 +15,7 @@ extension Container {
 private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [
     LoggerAutoRegister(),
     FirstModuleAutoRegister(),
+    SettingsAutoRegister(),
 ]
 
 extension Container: @retroactive AutoRegistering {

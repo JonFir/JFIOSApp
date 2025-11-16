@@ -2,6 +2,7 @@ import UIKit
 import Logger
 import FirstModule
 import FactoryKit
+import Settings
 
 extension Container {
     @MainActor
@@ -16,6 +17,7 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
     private var isShown: Bool = false
 
     func beforeAppRun() {
+        Container.shared.settingsRegisterTask().register()
         Container.shared.appMetricaRegisterTask()?.register()
         logger?.info("application will run at first time", category: .system, module: "App")
     }
