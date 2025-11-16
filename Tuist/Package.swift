@@ -2,29 +2,56 @@
 import PackageDescription
 
 #if TUIST
-    import struct ProjectDescription.PackageSettings
+    import ProjectDescription
     import ProjectDescriptionHelpers
 
     let packageSettings = PackageSettings(
         productTypes: [
-            "FactoryKit": Constants.remoteDependenciesType
+            "FactoryKit": Constants.remoteDependenciesType,
         ],
         baseSettings: .settings(
-            base: [
-                "SWIFT_VERSION": "6.2",
-            ],
             configurations: [
-                .debug(name: .debug, settings: ["SWIFT_VERSION": "6.2"]),
-                .release(name: Constants.qaConfigurationName, settings: ["SWIFT_VERSION": "6.2"]),
-                .release(name: .release, settings: ["SWIFT_VERSION": "6.2"]),
+                .debug(name: .debug, settings: [
+                    "CLANG_ENABLE_EXPLICIT_MODULES": false,
+                    "DEBUG_INFORMATION_FORMAT": "dwarf",
+                ]),
+                .release(name: Constants.qaConfigurationName, settings: [
+                    "CLANG_ENABLE_EXPLICIT_MODULES": false,
+                    "DEBUG_INFORMATION_FORMAT": "dwarf",
+                ]),
+                .release(name: .release, settings: [
+                    "CLANG_ENABLE_EXPLICIT_MODULES": false,
+                    "DEBUG_INFORMATION_FORMAT": "dwarf",
+                ]),
             ]
-        )
+        ),
+        targetSettings: [
+            "FactoryKit": makeFactoryKitSettings()
+        ]
     )
 #endif
 
 let package = Package(
     name: "test",
     dependencies: [
-        .package(url: "https://github.com/hmlongco/Factory.git", .upToNextMajor(from: "2.4.12"))
+        .package(url: "https://github.com/hmlongco/Factory.git", .upToNextMajor(from: "2.4.12")),
+        .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.0.0")
     ]
 )
+
+
+func makeFactoryKitSettings() -> Settings {
+    let swiftVersion = SettingValue(stringLiteral: "6.2")
+    return Settings.settings(
+        configurations: [
+            .debug(name: .debug, settings: [
+                "SWIFT_VERSION": swiftVersion,
+            ]),
+            .release(name: Constants.qaConfigurationName, settings: [
+                "SWIFT_VERSION": swiftVersion,
+            ]),
+            .release(name: .release, settings: [
+                "SWIFT_VERSION": swiftVersion,
+            ]),
+        ])
+}

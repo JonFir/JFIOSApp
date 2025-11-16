@@ -16,6 +16,7 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
     private var isShown: Bool = false
 
     func beforeAppRun() {
+        Container.shared.appMetricaRegisterTask()?.register()
         logger?.info("application will run at first time", category: .system, module: "App")
     }
 

@@ -7,31 +7,24 @@ public class LoggerAutoRegister: AutoRegistering {
     public init() {}
 
     public func autoRegister() {
-        #if QA
-        let fileLoggerHandler = FileLoggerHandler()
-        Container.shared.fileLogHandling.register { fileLoggerHandler }
-        Container.shared.logger.register {
-            return Logger(
-                handlers: [
-                    fileLoggerHandler
-                ]
-            )
+        var handlers: [LoggerHandler] = []
+        #if DEBUG
+        let handler = OSLoggerHandler(subsystem: Bundle.main.bundleIdentifier ?? "", category: "app_logs")
+        handlers.append(handler)
+        #elseif QA
+        if let fileLoggerHandler = FileLoggerHandler() {
+            handlers.append(fileLoggerHandler)
+            Container.shared.fileLogHandling.register { fileLoggerHandler }
         }
+        #else
+        let handler = ServerLoggerHandler()
+        handlers.append(handler)
+        Container.shared.appMetricaRegisterTask.register { AppMetricaRegisterTaskImpl() }
         #endif
-        Container.shared.logger.register {
-            #if DEBUG
+        Container.shared.logger.register { [handlers] in
             return Logger(
-                handlers: [
-                    OSLoggerHandler(subsystem: Bundle.main.bundleIdentifier ?? "", category: "app_logs")
-                ]
+                handlers: handlers
             )
-            #else
-            return Logger(
-                handlers: [
-                    ServerLoggerHandler()
-                ]
-            )
-            #endif
         }
     }
 }

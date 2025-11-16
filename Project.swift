@@ -18,7 +18,7 @@ let project = Project(
             .release(
                 name: Constants.qaConfigurationName,
                 settings: [
-                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "QA"
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "QA",
                 ]
             ),
             .release(
@@ -58,11 +58,12 @@ let project = Project(
             dependencies: [
                 Modules.firstModule.apiTarget,
                 Modules.logger.apiTarget,
-            ] + Modules.allCases.map(\.implTarget)
+            ]
+                + Modules.allCases.map(\.implTarget)
         ),
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
-    + module(moduleInfo: Modules.logger),
+    + module(moduleInfo: Modules.logger, implDependencies: [Dependencies.appMetricaCore.target]),
     schemes: [
         Scheme.scheme(
             name: "QA",
@@ -77,8 +78,9 @@ enum Modules: String, ModuleInfo, CaseIterable {
     case logger = "Logger"
 }
 
-enum Dependencies: String {
+enum Dependencies: String, CaseIterable {
     case factory = "FactoryKit"
+    case appMetricaCore = "AppMetricaCore"
 }
 
 
