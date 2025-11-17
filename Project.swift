@@ -50,6 +50,7 @@ let project = Project(
                         ],
                     ],
                     "UILaunchStoryboardName": "LaunchScreen",
+                    "APP_METRICA_KEY": .string(Env.appMetricaKey),
                 ]
             ),
             buildableFolders: [

@@ -11,7 +11,7 @@ public actor SettingsProviderImpl: SettingsProvider {
     private var subscribers: [WeakSubscriber] = []
     
     public init() {
-        let appMetricaApiKey = ProcessInfo.processInfo.environment["APP_METRICA_KEY"] ?? ""
+        let appMetricaApiKey = (Bundle.main.object(forInfoDictionaryKey: "APP_METRICA_KEY") as? String) ?? ""
 
         let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
             ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String

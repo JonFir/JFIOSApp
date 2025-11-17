@@ -103,5 +103,6 @@ graph.png
 # CI/CD
 *.log
 
-.env
+*.env
+Env.swift
 .local_memory

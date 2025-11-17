@@ -26,16 +26,6 @@ import PackageDescription
             "FactoryKit": makeFactoryKitSettings()
         ]
     )
-#endif
-
-let package = Package(
-    name: "test",
-    dependencies: [
-        .package(url: "https://github.com/hmlongco/Factory.git", .upToNextMajor(from: "2.4.12")),
-        .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.0.0")
-    ]
-)
-
 
 func makeFactoryKitSettings() -> Settings {
     let swiftVersion = SettingValue(stringLiteral: "6.2")
@@ -52,3 +42,14 @@ func makeFactoryKitSettings() -> Settings {
             ]),
         ])
 }
+#endif
+
+let package = Package(
+    name: "test",
+    dependencies: [
+        .package(url: "https://github.com/hmlongco/Factory.git", .upToNextMajor(from: "2.4.12")),
+        .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.0.0")
+    ]
+)
+
+
