@@ -1,5 +1,4 @@
 import Foundation
-import LibSwift
 
 /// Contains application settings and configuration parameters.
 ///
@@ -11,7 +10,7 @@ public struct Settings: Sendable {
     public let bundleID: String
     
     /// AppMetrica device identifier
-    public let deviceID: String?
+    public var deviceID: String?
     
     public init(
         appMetricaApiKey: String,
@@ -23,19 +22,5 @@ public struct Settings: Sendable {
         self.appName = appName
         self.bundleID = bundleID
         self.deviceID = deviceID
-    }
-    
-    public func with(
-        appMetricaApiKey: String? = nil,
-        appName: String? = nil,
-        bundleID: String? = nil,
-        deviceID: OptionalChange<String> = .keep
-    ) -> Settings {
-        Settings(
-            appMetricaApiKey: appMetricaApiKey ?? self.appMetricaApiKey,
-            appName: appName ?? self.appName,
-            bundleID: bundleID ?? self.bundleID,
-            deviceID: deviceID ?? self.deviceID
-        )
     }
 }

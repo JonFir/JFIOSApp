@@ -17,20 +17,23 @@ extension Container {
 /// let provider = Container.shared.settingsProvider()
 ///
 /// await provider.configure()
-/// let settings = await provider.getSettings()
+/// let settings = await provider.settings
 ///
 /// await provider.subscribe { updatedSettings in
 ///     print("Settings updated: \(updatedSettings)")
 /// }
 ///
-/// await provider.setDeviceID("device-123")
+/// await settingsProvider?.update {
+///     $0.deviceID = deviceID
+/// }
 /// ```
 public protocol SettingsProvider: Actor {
+    /// The app's initial settings don't change over time.
     nonisolated var initialSettings: Settings { get }
-    /// Returns current application settings.
-    ///
-    /// - Returns: Current Settings instance
-    func getSettings() -> Settings
+
+    /// Current settings, subject to change.
+    /// Use `subscribe` to track modifications.
+    var settings: Settings { get }
     
     /// Subscribes to settings changes with automatic cleanup when token is deallocated.
     ///
@@ -41,8 +44,7 @@ public protocol SettingsProvider: Actor {
     /// - Returns: Subscription token that must be retained to keep subscription active
     func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnySendableObject
 
-    /// Updates the AppMetrica device identifier.
-    ///
-    /// - Parameter deviceID: The device identifier from AppMetrica
-    func setDeviceID(_ deviceID: String) async
+    /// Changing current settings.
+    /// Notifies subscribers upon change.
+    func update(_ updater: @Sendable (inout Settings) -> Void) async
 }

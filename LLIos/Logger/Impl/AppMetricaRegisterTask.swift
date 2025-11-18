@@ -20,7 +20,9 @@ public final class AppMetricaRegisterTask {
         AppMetrica.requestStartupIdentifiers(for: [.deviceIDKey], on: .main) { [settingsProvider] identifiers, _ in
             guard let deviceID = identifiers?[.deviceIDKey] as? String else { return }
             Task.immediate {
-                await settingsProvider?.setDeviceID(deviceID)
+                await settingsProvider?.update {
+                    $0.deviceID = deviceID
+                }
             }
         }
     }

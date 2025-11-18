@@ -4,7 +4,7 @@ import LibSwift
 
 public actor SettingsProviderImpl: SettingsProvider {
     public let initialSettings: Settings
-    private var settings: Settings
+    private(set) public var settings: Settings
     private let observers = Observers<Settings>()
     
     public init() {
@@ -31,9 +31,9 @@ public actor SettingsProviderImpl: SettingsProvider {
     public func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnySendableObject {
         await observers.subscribe(callback, settings)
     }
-    
-    public func setDeviceID(_ deviceID: String) async {
-        settings = settings.with(deviceID: .set(deviceID))
+
+    public func update(_ updater: @Sendable (inout Settings) -> Void) async {
+        updater(&settings)
         await observers.notify(settings)
     }
 }
