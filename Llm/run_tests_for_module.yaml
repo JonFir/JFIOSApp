@@ -9,6 +9,6 @@ task:
           Через xcodebuild запусти тесты с используя workspace и схему <module_name> и проанализируй результаты.
           Команда запускает не в sundbox режиме.
           ```
-          xcodebuild test -workspace 'LLIos.xcworkspace' -scheme '<module_name>' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=26.0'
+          xcodebuild test -workspace 'LLIos.xcworkspace' -scheme '<module_name>' -destination 'platform=iOS Simulator,name=iPhone 26 Pro,OS=26.0'
           ```
           Команда 100% правильная и не требует изменений. Если она не работает, Повтори ее еще раз. Максимальное количество попыток - 10.

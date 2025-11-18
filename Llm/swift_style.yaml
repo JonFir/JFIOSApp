@@ -1,0 +1,5 @@
+- struct:
+  - sendable: |
+      All structures need to be marked up with either a global actor or '@Sendable'.
+- closure: |
+      All closures need to be marked up with either a global actor or '@Sendable'.

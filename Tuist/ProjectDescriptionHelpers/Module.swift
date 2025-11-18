@@ -2,11 +2,12 @@ import ProjectDescription
 
 public func module<Info: ModuleInfo>(
     moduleInfo: Info,
+    onlyApi: Bool = false,
     apiDependencies: [TargetDependency] = [],
     implDependencies: [TargetDependency] = [],
     testDependencies: [TargetDependency] = [],
 ) -> [Target] {
-    [
+    var targets: [Target] = [
         .target(
             name: moduleInfo.apiName,
             destinations: .iOS,
@@ -20,19 +21,6 @@ public func module<Info: ModuleInfo>(
             settings: .settings()
         ),
         .target(
-            name: moduleInfo.implName,
-            destinations: .iOS,
-            product: Constants.moduleType,
-            bundleId: "\(Constants.bundleId).\(moduleInfo.implName)",
-            infoPlist: .default,
-            buildableFolders: [
-                BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Impl"),
-                BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Resources"),
-            ],
-            dependencies: implDependencies + [moduleInfo.apiTarget, .external(name: "FactoryKit")],
-            settings: .settings()
-        ),
-        .target(
             name: moduleInfo.testName,
             destinations: .iOS,
             product: .unitTests,
@@ -41,13 +29,43 @@ public func module<Info: ModuleInfo>(
             buildableFolders: [
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Tests"),
             ],
-            dependencies: testDependencies + [
-                moduleInfo.apiTarget,
-                moduleInfo.implTarget,
-            ],
+            dependencies: testDependencies + baseTestDependencies(moduleInfo, onlyApi),
             settings: .settings()
         )
     ]
+
+    if !onlyApi {
+        targets.append(
+            .target(
+                name: moduleInfo.implName,
+                destinations: .iOS,
+                product: Constants.moduleType,
+                bundleId: "\(Constants.bundleId).\(moduleInfo.implName)",
+                infoPlist: .default,
+                buildableFolders: [
+                    BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Impl"),
+                    BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Resources"),
+                ],
+                dependencies: implDependencies + [moduleInfo.apiTarget, .external(name: "FactoryKit")],
+                settings: .settings()
+            ),
+        )
+    }
+    return targets
+}
+
+private func baseTestDependencies<Info: ModuleInfo>(
+    _ moduleInfo: Info,
+    _ onlyApi: Bool = false,
+) -> [TargetDependency] {
+    if onlyApi {
+        [moduleInfo.apiTarget]
+    } else {
+        [
+            moduleInfo.apiTarget,
+            moduleInfo.implTarget,
+        ]
+    }
 }
 
 public protocol ModuleInfo: RawRepresentable<String> {
