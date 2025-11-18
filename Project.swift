@@ -8,6 +8,7 @@ let project = Project(
             "SWIFT_VERSION": "6.2",
             "OTHER_LDFLAGS": "$(inherited) -ObjC",
             "CLANG_ENABLE_EXPLICIT_MODULES": false,
+            "SWIFT_APPROACHABLE_CONCURRENCY": true,
         ],
         configurations: [
             .debug(
@@ -85,7 +86,7 @@ let project = Project(
         Dependencies.appMetricaCrashes.target,
         Modules.settings.apiTarget,
     ])
-    + module(moduleInfo: Modules.settings)
+    + module(moduleInfo: Modules.settings, apiDependencies: [Modules.libSwift.apiTarget])
     + module(moduleInfo: Modules.libSwift, onlyApi: true),
     schemes: [
         Scheme.scheme(
@@ -100,7 +101,7 @@ enum Modules: String, ModuleInfo {
     case firstModule = "FirstModule"
     case logger = "Logger"
     case settings = "Settings"
-    case libSwift = "libSwift"
+    case libSwift = "LibSwift"
 
     static var impls: [Modules] {
         [

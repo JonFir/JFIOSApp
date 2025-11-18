@@ -3,6 +3,7 @@ import Logger
 import FirstModule
 import FactoryKit
 import Settings
+import LibSwift
 
 extension Container {
     @MainActor
@@ -30,7 +31,7 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
     @LazyInjected(\.settingsProvider) var settingsProvider
     @Injected(\.logger) var logger
 
-    private var settingsListener: (AnyObject & Sendable)?
+    private var settingsListener: AnySendableObject?
     private var isShown: Bool = false
     private var completedAsyncSteps: Set<ApplicationInitializatorAsyncSteps> = []
     private var isAppliactionConfigured: Bool = false

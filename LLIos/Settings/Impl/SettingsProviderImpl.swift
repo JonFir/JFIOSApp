@@ -1,14 +1,11 @@
 import Foundation
 import Settings
-
-private struct WeakSubscriber {
-    weak var subscriber: SettingsSubscriber?
-}
+import LibSwift
 
 public actor SettingsProviderImpl: SettingsProvider {
     public let initialSettings: Settings
     private var settings: Settings
-    private var subscribers: [WeakSubscriber] = []
+    private let observers = Observers<Settings>()
     
     public init() {
         let appMetricaApiKey = (Bundle.main.object(forInfoDictionaryKey: "APP_METRICA_KEY") as? String) ?? ""
@@ -27,29 +24,16 @@ public actor SettingsProviderImpl: SettingsProvider {
         settings = initialSettings
     }
     
-    public func getSettings() async -> Settings {
+    public func getSettings() -> Settings {
         return settings
     }
     
-    public func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnyObject & Sendable {
-        let subscriber = SettingsSubscriber(callback: callback)
-        subscribers.append(WeakSubscriber(subscriber: subscriber))
-        
-        await callback(settings)
-
-        return subscriber
+    public func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnySendableObject {
+        await observers.subscribe(callback, settings)
     }
     
     public func setDeviceID(_ deviceID: String) async {
         settings = settings.with(deviceID: .set(deviceID))
-        await notifySubscribers()
-    }
-
-    private func notifySubscribers() async {
-        subscribers.removeAll { $0.subscriber == nil }
-        
-        for weakSubscriber in subscribers {
-            await weakSubscriber.subscriber?.callback(settings)
-        }
+        await observers.notify(settings)
     }
 }

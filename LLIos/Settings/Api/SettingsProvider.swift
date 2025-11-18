@@ -1,5 +1,6 @@
 import Foundation
 import FactoryKit
+import LibSwift
 
 extension Container {
     public var settingsProvider: Factory<SettingsProvider?> { promised().singleton }
@@ -24,12 +25,12 @@ extension Container {
 ///
 /// await provider.setDeviceID("device-123")
 /// ```
-public protocol SettingsProvider: Sendable {
-    var initialSettings: Settings { get }
+public protocol SettingsProvider: Actor {
+    nonisolated var initialSettings: Settings { get }
     /// Returns current application settings.
     ///
     /// - Returns: Current Settings instance
-    func getSettings() async -> Settings
+    func getSettings() -> Settings
     
     /// Subscribes to settings changes with automatic cleanup when token is deallocated.
     ///
@@ -38,8 +39,8 @@ public protocol SettingsProvider: Sendable {
     ///
     /// - Parameter callback: Closure called when settings are updated
     /// - Returns: Subscription token that must be retained to keep subscription active
-    func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnyObject & Sendable
-    
+    func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnySendableObject
+
     /// Updates the AppMetrica device identifier.
     ///
     /// - Parameter deviceID: The device identifier from AppMetrica
