@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-let _ = autoreleasepool {
+_ = autoreleasepool {
     return UIApplicationMain(
         CommandLine.argc,
         CommandLine.unsafeArgv,

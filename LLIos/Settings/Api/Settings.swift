@@ -87,4 +87,3 @@ public struct Settings: Sendable {
         )
     }
 }
-

@@ -105,4 +105,3 @@ struct LogMessageFormatterTests {
         #expect(match != nil)
     }
 }
-

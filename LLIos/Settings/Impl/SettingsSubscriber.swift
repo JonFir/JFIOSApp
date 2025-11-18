@@ -8,4 +8,3 @@ final class SettingsSubscriber: Sendable {
         self.callback = callback
     }
 }
-

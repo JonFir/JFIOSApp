@@ -28,5 +28,4 @@ final class ServerLoggerHandler: LoggerHandler {
 
     }
 
-
 }

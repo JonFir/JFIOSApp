@@ -38,11 +38,10 @@ public protocol SettingsProvider: Sendable {
     ///
     /// - Parameter callback: Closure called when settings are updated
     /// - Returns: Subscription token that must be retained to keep subscription active
-    func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async ->  AnyObject & Sendable
+    func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnyObject & Sendable
     
     /// Updates the AppMetrica device identifier.
     ///
     /// - Parameter deviceID: The device identifier from AppMetrica
     func setDeviceID(_ deviceID: String) async
 }
-

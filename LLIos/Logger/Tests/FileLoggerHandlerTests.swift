@@ -341,4 +341,3 @@ struct FileLoggerHandlerTests {
         try handler.clearLogs()
     }
 }
-

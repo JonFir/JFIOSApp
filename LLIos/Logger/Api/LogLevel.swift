@@ -20,4 +20,3 @@ public enum LogLevel: Sendable {
     case info
     case debug
 }
-

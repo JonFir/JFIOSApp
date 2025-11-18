@@ -8,7 +8,7 @@ class ApplicationDelegate: NSObject, UIApplicationDelegate {
 
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         applicationInitializator.beforeAppRun()
         return true
@@ -26,4 +26,3 @@ class ApplicationDelegate: NSObject, UIApplicationDelegate {
     }
     
 }
-

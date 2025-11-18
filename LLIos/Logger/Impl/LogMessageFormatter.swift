@@ -81,4 +81,3 @@ private func formatParameters(_ parameters: [String: Any]) -> String {
     
     return items
 }
-

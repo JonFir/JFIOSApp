@@ -1,0 +1,24 @@
+disabled_rules:
+  - type_name
+  - type_body_length
+  - static_over_final_class
+  - nesting
+  - large_tuple
+  - inclusive_language
+  - implicit_optional_initialization
+  - identifier_name
+  - generic_type_name
+  - function_parameter_count
+  - function_body_length
+  - force_try
+  - force_cast
+  - for_where
+  - file_length
+  - trailing_whitespace
+  - line_length
+
+excluded:
+  - Tuist
+
+trailing_comma:
+  mandatory_comma: true

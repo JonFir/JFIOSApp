@@ -94,4 +94,3 @@ public actor LoggerHandlerMock: LoggerHandler {
         setOnLog(nil)
     }
 }
-

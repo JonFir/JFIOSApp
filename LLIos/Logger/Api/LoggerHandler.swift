@@ -43,4 +43,3 @@ public protocol LoggerHandler: Sendable {
         function: String
     ) async
 }
-

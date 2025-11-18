@@ -44,9 +44,9 @@ let project = Project(
                             "UIWindowSceneSessionRoleApplication": [
                                 [
                                     "UISceneConfigurationName": "Default Configuration",
-                                    "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate"
-                                ]
-                            ]
+                                    "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate",
+                                ],
+                            ],
                         ],
                     ],
                     "UILaunchStoryboardName": "LaunchScreen",
@@ -56,6 +56,20 @@ let project = Project(
             buildableFolders: [
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Sources"),
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Resources"),
+            ],
+            scripts: [
+                TargetScript.pre(
+                    script: """
+                        export PATH="/opt/homebrew/bin:$PATH"
+                        if command -v swiftlint >/dev/null 2>&1
+                        then
+                            swiftlint
+                        else
+                            echo "warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions."
+                        fi
+                        """,
+                    name: "SwiftLintScript"
+                ),
             ],
             dependencies: [
                 Modules.firstModule.apiTarget,
@@ -77,7 +91,7 @@ let project = Project(
             name: "QA",
             buildAction: BuildAction.buildAction(targets: [.target(Constants.appName)]),
             runAction: RunAction.runAction(configuration: Constants.qaConfigurationName)
-        )
+        ),
     ]
 )
 
@@ -92,8 +106,6 @@ enum Dependencies: String, CaseIterable {
     case appMetricaCore = "AppMetricaCore"
     case appMetricaCrashes = "AppMetricaCrashes"
 }
-
-
 
 extension Dependencies {
     var target: TargetDependency {

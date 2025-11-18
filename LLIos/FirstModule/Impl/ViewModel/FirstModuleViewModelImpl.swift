@@ -2,8 +2,9 @@ import SwiftUI
 import FactoryKit
 
 extension Container {
+    @MainActor
     var firstModuleViewModel: Factory<FirstModuleViewModel> {
-        self { FirstModuleViewModelImpl(title: "hello!") }
+        self { @MainActor in FirstModuleViewModelImpl(title: "hello!") }.shared
     }
 }
 

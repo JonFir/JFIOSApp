@@ -25,4 +25,3 @@ public enum LogCategory: String, Sendable {
     case routing = "Routing"
     case system = "System"
 }
-

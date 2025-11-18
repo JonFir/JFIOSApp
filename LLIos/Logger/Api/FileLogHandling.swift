@@ -44,4 +44,3 @@ public protocol FileLogHandling: Sendable {
     /// - Throws: Error if unable to read log directory or delete old files
     func performLogRotation() throws
 }
-
