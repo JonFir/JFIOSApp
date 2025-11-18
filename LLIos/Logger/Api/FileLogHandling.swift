@@ -2,7 +2,7 @@ import Foundation
 import FactoryKit
 
 extension Container {
-    public var fileLogHandling: Factory<FileLogHandling?> { promised() }
+    public var fileLogHandling: Factory<FileLogHandling?> { self { nil } }
 }
 
 /// Protocol for accessing and managing file-based logs.

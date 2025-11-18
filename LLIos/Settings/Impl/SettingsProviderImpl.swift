@@ -31,25 +31,25 @@ public actor SettingsProviderImpl: SettingsProvider {
         return settings
     }
     
-    public func subscribe(_ callback: @escaping @Sendable (Settings) -> Void) async -> AnyObject & Sendable {
+    public func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnyObject & Sendable {
         let subscriber = SettingsSubscriber(callback: callback)
         subscribers.append(WeakSubscriber(subscriber: subscriber))
         
-        callback(settings)
-        
+        await callback(settings)
+
         return subscriber
     }
     
     public func setDeviceID(_ deviceID: String) async {
         settings = settings.with(deviceID: .set(deviceID))
-        notifySubscribers()
+        await notifySubscribers()
     }
 
-    private func notifySubscribers() {
+    private func notifySubscribers() async {
         subscribers.removeAll { $0.subscriber == nil }
         
         for weakSubscriber in subscribers {
-            weakSubscriber.subscriber?.callback(settings)
+            await weakSubscriber.subscriber?.callback(settings)
         }
     }
 }

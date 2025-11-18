@@ -2,7 +2,7 @@ import SwiftUI
 import FactoryKit
 
 struct FirstModuleView: View {
-    @State var vm = Container.shared.firstModuleViewModel()
+    @State var vm = resolve(\.firstModuleViewModel)
 
     var body: some View {
         Text(vm.title)
