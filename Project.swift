@@ -76,7 +76,7 @@ let project = Project(
                 Modules.logger.apiTarget,
                 Modules.settings.apiTarget,
             ]
-                + Modules.allCases.map(\.implTarget)
+                + Modules.impls.map(\.implTarget)
         ),
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
@@ -85,7 +85,8 @@ let project = Project(
         Dependencies.appMetricaCrashes.target,
         Modules.settings.apiTarget,
     ])
-    + module(moduleInfo: Modules.settings),
+    + module(moduleInfo: Modules.settings)
+    + module(moduleInfo: Modules.libSwift, onlyApi: true),
     schemes: [
         Scheme.scheme(
             name: "QA",
@@ -95,10 +96,19 @@ let project = Project(
     ]
 )
 
-enum Modules: String, ModuleInfo, CaseIterable {
+enum Modules: String, ModuleInfo {
     case firstModule = "FirstModule"
     case logger = "Logger"
     case settings = "Settings"
+    case libSwift = "libSwift"
+
+    static var impls: [Modules] {
+        [
+            .firstModule,
+            .logger,
+            .settings,
+        ]
+    }
 }
 
 enum Dependencies: String, CaseIterable {
