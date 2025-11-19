@@ -54,4 +54,3 @@ struct WeakObjectTests {
         #expect(weakRef3.value == nil)
     }
 }
-

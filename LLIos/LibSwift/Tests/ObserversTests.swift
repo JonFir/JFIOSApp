@@ -1,7 +1,7 @@
 import Testing
 @testable import LibSwift
 
-actor CallbackTracker<T: Sendable & Equatable>: Sendable {
+actor CallbackTracker<T: Sendable & Equatable> {
     private(set) var callCount: Int = 0
     private(set) var receivedValues: [T] = []
     
@@ -140,7 +140,6 @@ struct ObserversTests {
         await observers.notify("test")
     }
 
-    
     @Test
     func allTokensReleasedStopsAllNotifications() async {
         let observers = Observers<Int>()
@@ -209,4 +208,3 @@ struct ObserversTests {
         _ = token2
     }
 }
-
