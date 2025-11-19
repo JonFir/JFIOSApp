@@ -6,10 +6,8 @@ task:
     steps:
       - action: "Создание структуры модуля"
         instruction: |
-          Вызови команду `tuist scaffold common_module --name <module_name>`, где <module_name> - имя модуля.
-          
-          Если нужен только API модуль, добавь параметр `--only_api true`:
-          `tuist scaffold common_module --name <module_name> --only_api true`
+          Если нужен общий модуль, вызови команду `tuist scaffold common_module --name <module_name>`, где <module_name> - имя модуля.
+          Если нужен только API модуль, вызови команду `tuist scaffold api_module --name <module_name>`, где <module_name> - имя модуля.
       - action: "Регистрация имени модуля в Project.swift"
         instruction: |
           Добавь имя модуля в enum Modules в Project.swift

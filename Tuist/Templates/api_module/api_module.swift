@@ -19,13 +19,5 @@ let template = Template(
             path: "\(Constants.modulesFolder)/\(nameAttribute)/Tests/DummyTests.swift",
             contents: "//\n//  DummyTests.swift"
         ),
-        .string(
-            path: "\(Constants.modulesFolder)/\(nameAttribute)/Impl/Dummy.swift",
-            contents: "//\n//  Dummy.swift"
-        ),
-        .string(
-            path: "\(Constants.modulesFolder)/\(nameAttribute)/Resources/.gitkeep",
-            contents: ""
-        ),
     ]
 )
