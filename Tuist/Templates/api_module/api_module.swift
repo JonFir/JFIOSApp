@@ -8,7 +8,6 @@ let template = Template(
     attributes: [
         nameAttribute,
         .optional("platform", default: "ios"),
-        onlyApiAttribute,
     ],
     items: [
         .string(

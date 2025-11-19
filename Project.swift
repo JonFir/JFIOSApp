@@ -101,7 +101,8 @@ let project = Project(
     ])
     + module(moduleInfo: Modules.settings, apiDependencies: [Modules.libSwift.apiTarget])
     + module(moduleInfo: Modules.libSwift, onlyApi: true)
-    + module(moduleInfo: Modules.navigator),
+    + module(moduleInfo: Modules.navigator)
+    + module(moduleInfo: Modules.uiSplash),
     schemes: schemes
 )
 
@@ -111,6 +112,7 @@ enum Modules: String, ModuleInfo {
     case settings = "Settings"
     case libSwift = "LibSwift"
     case navigator = "Navigator"
+    case uiSplash = "UISplash"
 
     static var impls: [Modules] {
         [
@@ -118,6 +120,7 @@ enum Modules: String, ModuleInfo {
             .logger,
             .settings,
             .navigator,
+            .uiSplash,
         ]
     }
 }
