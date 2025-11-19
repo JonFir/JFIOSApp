@@ -1,84 +1,97 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project(
+let settings: Settings = Settings.settings(
+    base: [
+        "SWIFT_VERSION": "6.2",
+        "OTHER_LDFLAGS": "$(inherited) -ObjC",
+        "CLANG_ENABLE_EXPLICIT_MODULES": false,
+        "SWIFT_APPROACHABLE_CONCURRENCY": true,
+    ],
+    configurations: [
+        .debug(
+            name: .debug,
+            settings: [
+                "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG"
+            ]
+        ),
+        .release(
+            name: Constants.qaConfigurationName,
+            settings: [
+                "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "QA",
+            ]
+        ),
+        .release(
+            name: .release,
+            settings: [
+                "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RELEASE"
+            ]
+        ),
+    ]
+)
+
+let appTarget: Target = Target.target(
     name: Constants.appName,
-    settings: Settings.settings(
-        base: [
-            "SWIFT_VERSION": "6.2",
-            "OTHER_LDFLAGS": "$(inherited) -ObjC",
-            "CLANG_ENABLE_EXPLICIT_MODULES": false,
-            "SWIFT_APPROACHABLE_CONCURRENCY": true,
-        ],
-        configurations: [
-            .debug(
-                name: .debug,
-                settings: [
-                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "DEBUG"
-                ]
-            ),
-            .release(
-                name: Constants.qaConfigurationName,
-                settings: [
-                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "QA",
-                ]
-            ),
-            .release(
-                name: .release,
-                settings: [
-                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "RELEASE"
-                ]
-            ),
-        ]
-    ),
-    targets: [
-        .target(
-            name: Constants.appName,
-            destinations: .iOS,
-            product: .app,
-            bundleId: Constants.bundleId,
-            infoPlist: .extendingDefault(
-                with: [
-                    "UIApplicationSceneManifest": [
-                        "UIApplicationSupportsMultipleScenes": true,
-                        "UISceneConfigurations": [
-                            "UIWindowSceneSessionRoleApplication": [
-                                [
-                                    "UISceneConfigurationName": "Default Configuration",
-                                    "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate",
-                                ],
-                            ],
+    destinations: .iOS,
+    product: .app,
+    bundleId: Constants.bundleId,
+    infoPlist: .extendingDefault(
+        with: [
+            "UIApplicationSceneManifest": [
+                "UIApplicationSupportsMultipleScenes": true,
+                "UISceneConfigurations": [
+                    "UIWindowSceneSessionRoleApplication": [
+                        [
+                            "UISceneConfigurationName": "Default Configuration",
+                            "UISceneDelegateClassName": "$(PRODUCT_MODULE_NAME).SceneDelegate",
                         ],
                     ],
-                    "UILaunchStoryboardName": "LaunchScreen",
-                    "APP_METRICA_KEY": .string(Env.appMetricaKey),
-                ]
-            ),
-            buildableFolders: [
-                BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Sources"),
-                BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Resources"),
+                ],
             ],
-            scripts: [
-                TargetScript.pre(
-                    script: """
-                        export PATH="/opt/homebrew/bin:$PATH"
-                        if command -v swiftlint >/dev/null 2>&1
-                        then
-                            swiftlint
-                        else
-                            echo "warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions."
-                        fi
-                        """,
-                    name: "SwiftLintScript"
-                ),
-            ],
-            dependencies: [
-                Modules.firstModule.apiTarget,
-                Modules.logger.apiTarget,
-                Modules.settings.apiTarget,
-            ]
-                + Modules.impls.map(\.implTarget)
+            "UILaunchStoryboardName": "LaunchScreen",
+            "APP_METRICA_KEY": .string(Env.appMetricaKey),
+        ]
+    ),
+    buildableFolders: [
+        BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Sources"),
+        BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/App/Resources"),
+    ],
+    scripts: [
+        TargetScript.pre(
+            script: """
+                export PATH="/opt/homebrew/bin:$PATH"
+                if command -v swiftlint >/dev/null 2>&1
+                then
+                    swiftlint
+                else
+                    echo "warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions."
+                fi
+                """,
+            name: "SwiftLintScript"
         ),
+    ],
+    dependencies: [
+        Modules.firstModule.apiTarget,
+        Modules.logger.apiTarget,
+        Modules.settings.apiTarget,
+        Modules.navigator.apiTarget,
+    ]
+        + Modules.impls.map(\.implTarget)
+)
+
+let schemes: [Scheme] = [
+    Scheme.scheme(
+        name: "QA",
+        buildAction: BuildAction.buildAction(targets: [.target(Constants.appName)]),
+        runAction: RunAction.runAction(configuration: Constants.qaConfigurationName)
+    ),
+]
+
+let project = Project(
+    name: Constants.appName,
+    settings: settings,
+    targets: [
+        appTarget,
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
     + module(moduleInfo: Modules.logger, implDependencies: [
@@ -87,14 +100,9 @@ let project = Project(
         Modules.settings.apiTarget,
     ])
     + module(moduleInfo: Modules.settings, apiDependencies: [Modules.libSwift.apiTarget])
-    + module(moduleInfo: Modules.libSwift, onlyApi: true),
-    schemes: [
-        Scheme.scheme(
-            name: "QA",
-            buildAction: BuildAction.buildAction(targets: [.target(Constants.appName)]),
-            runAction: RunAction.runAction(configuration: Constants.qaConfigurationName)
-        ),
-    ]
+    + module(moduleInfo: Modules.libSwift, onlyApi: true)
+    + module(moduleInfo: Modules.navigator),
+    schemes: schemes
 )
 
 enum Modules: String, ModuleInfo {
@@ -102,12 +110,14 @@ enum Modules: String, ModuleInfo {
     case logger = "Logger"
     case settings = "Settings"
     case libSwift = "LibSwift"
+    case navigator = "Navigator"
 
     static var impls: [Modules] {
         [
             .firstModule,
             .logger,
             .settings,
+            .navigator,
         ]
     }
 }
