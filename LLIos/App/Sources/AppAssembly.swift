@@ -6,16 +6,15 @@ import LoggerImpl
 import FirstModuleImpl
 import Settings
 import SettingsImpl
-
-extension Container {
-    @MainActor
-    public var mainWindow: Factory<UIWindow?> { promised() }
-}
+import NavigatorImpl
+import UISplashImpl
 
 private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [
     LoggerAutoRegister(),
     FirstModuleAutoRegister(),
     SettingsAutoRegister(),
+    NavigatorAutoRegister(),
+    UISplashAutoRegister(),
 ]
 
 extension Container: @retroactive AutoRegistering {

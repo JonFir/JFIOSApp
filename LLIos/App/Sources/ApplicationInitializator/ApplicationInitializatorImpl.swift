@@ -4,6 +4,8 @@ import FirstModule
 import FactoryKit
 import Settings
 import LibSwift
+import LibUIKit
+import Navigator
 
 extension Container {
     @MainActor
@@ -29,6 +31,7 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
 
     @LazyInjected(\.mainWindow) var window
     @LazyInjected(\.settingsProvider) var settingsProvider
+    @LazyInjected(\.appNavigator) var appNavigator
     @Injected(\.logger) var logger
 
     private var settingsListener: AnySendableObject?
@@ -103,8 +106,7 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
         if let windowScene = (scene as? UIWindowScene) {
             let window = UIWindow(windowScene: windowScene)
             Container.shared.mainWindow.register { window }
-            window.rootViewController = Container.shared.firstModuleViewController()
-            window.makeKeyAndVisible()
+            appNavigator?.setup()
         } else {
             logger?.critical("Fail to make main UIWindow", category: .ui, module: "App", parameters: ["scene is": "\(scene)"])
         }

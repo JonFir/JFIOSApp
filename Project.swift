@@ -75,6 +75,7 @@ let appTarget: Target = Target.target(
         Modules.logger.apiTarget,
         Modules.settings.apiTarget,
         Modules.navigator.apiTarget,
+        Modules.libUIKit.apiTarget,
     ]
         + Modules.impls.map(\.implTarget)
 )
@@ -101,8 +102,14 @@ let project = Project(
     ])
     + module(moduleInfo: Modules.settings, apiDependencies: [Modules.libSwift.apiTarget])
     + module(moduleInfo: Modules.libSwift, onlyApi: true)
-    + module(moduleInfo: Modules.navigator)
-    + module(moduleInfo: Modules.uiSplash),
+    + module(moduleInfo: Modules.libUIKit, onlyApi: true)
+    + module(moduleInfo: Modules.navigator, implDependencies: [
+        Modules.uiSplash.apiTarget,
+        Modules.libUIKit.apiTarget,
+    ])
+    + module(moduleInfo: Modules.uiSplash, implDependencies: [
+        Modules.libUIKit.apiTarget,
+    ]),
     schemes: schemes
 )
 
@@ -111,6 +118,7 @@ enum Modules: String, ModuleInfo {
     case logger = "Logger"
     case settings = "Settings"
     case libSwift = "LibSwift"
+    case libUIKit = "LibUIKit"
     case navigator = "Navigator"
     case uiSplash = "UISplash"
 
