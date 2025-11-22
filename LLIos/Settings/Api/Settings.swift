@@ -8,6 +8,7 @@ public struct Settings: Sendable {
     public let appMetricaApiKey: String
     public let appName: String
     public let bundleID: String
+    public let persistenceDirectory: URL
     
     /// AppMetrica device identifier
     public var deviceID: String?
@@ -16,11 +17,13 @@ public struct Settings: Sendable {
         appMetricaApiKey: String,
         appName: String,
         bundleID: String,
+        persistenceDirectory: URL,
         deviceID: String? = nil
     ) {
         self.appMetricaApiKey = appMetricaApiKey
         self.appName = appName
         self.bundleID = bundleID
+        self.persistenceDirectory = persistenceDirectory
         self.deviceID = deviceID
     }
 }

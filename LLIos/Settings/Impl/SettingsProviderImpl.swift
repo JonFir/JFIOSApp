@@ -6,7 +6,7 @@ public actor SettingsProviderImpl: SettingsProvider {
     public let initialSettings: Settings
     private(set) public var settings: Settings
     private let observers = Observers<Settings>()
-    
+
     public init() {
         let appMetricaApiKey = (Bundle.main.object(forInfoDictionaryKey: "APP_METRICA_KEY") as? String) ?? ""
 
@@ -15,11 +15,26 @@ public actor SettingsProviderImpl: SettingsProvider {
             ?? ""
 
         let bundleID = Bundle.main.bundleIdentifier ?? ""
+        
+        let applicationSupportDirectory = FileManager.default
+            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .first
+        
+        let baseDirectory: URL
+        if let applicationSupportDirectory {
+            baseDirectory = applicationSupportDirectory
+        } else {
+            baseDirectory = FileManager.default.temporaryDirectory
+        }
+        
+        let persistenceDirectory = baseDirectory
+            .appendingPathComponent("PersistenceFiles", isDirectory: true)
 
         initialSettings = Settings(
             appMetricaApiKey: appMetricaApiKey,
             appName: appName,
-            bundleID: bundleID
+            bundleID: bundleID,
+            persistenceDirectory: persistenceDirectory
         )
         settings = initialSettings
     }

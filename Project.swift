@@ -101,7 +101,7 @@ let project = Project(
         Modules.settings.apiTarget,
     ])
     + module(moduleInfo: Modules.settings, apiDependencies: [Modules.libSwift.apiTarget])
-    + module(moduleInfo: Modules.libSwift, onlyApi: true)
+    + module(moduleInfo: Modules.libSwift, onlyApi: true, apiDependencies: [Modules.logger.apiTarget])
     + module(moduleInfo: Modules.libUIKit, onlyApi: true)
     + module(moduleInfo: Modules.navigator, implDependencies: [
         Modules.uiSplash.apiTarget,

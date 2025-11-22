@@ -1,0 +1,6 @@
+---
+alwaysApply: true
+---
+
+правила написания читай тут -> write_test.yaml
+как запускать тесты читай тут -> run_tests_for_module.yaml
