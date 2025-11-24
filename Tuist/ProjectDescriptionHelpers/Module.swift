@@ -29,7 +29,7 @@ public func module<Info: ModuleInfo>(
             buildableFolders: [
                 BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Tests"),
             ],
-            dependencies: testDependencies + baseTestDependencies(moduleInfo, onlyApi),
+            dependencies: testDependencies + baseTestDependencies(moduleInfo, onlyApi) + [.external(name: "FactoryTesting")],
             settings: .settings()
         )
     ]

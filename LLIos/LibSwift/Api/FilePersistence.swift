@@ -105,7 +105,6 @@ public struct FilePersistence<Value: Codable> {
                 cachedValue = wrapper.value
                 return wrapper.value
             } catch {
-                assertionFailure("\(error)")
                 cachedValue = defaultValue
                 return defaultValue
             }

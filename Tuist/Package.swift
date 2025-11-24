@@ -8,6 +8,7 @@ import PackageDescription
     let packageSettings = PackageSettings(
         productTypes: [
             "FactoryKit": Constants.remoteDependenciesType,
+            "FactoryTesting": Constants.remoteDependenciesType,
             "KeychainAccess": Constants.remoteDependenciesType,
         ],
         baseSettings: .settings(
@@ -24,7 +25,8 @@ import PackageDescription
             ]
         ),
         targetSettings: [
-            "FactoryKit": makeFactoryKitSettings()
+            "FactoryKit": makeFactoryKitSettings(),
+            "FactoryTesting": makeFactoryKitSettings(),
         ]
     )
 

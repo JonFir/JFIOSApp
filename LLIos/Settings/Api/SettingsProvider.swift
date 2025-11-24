@@ -3,7 +3,9 @@ import FactoryKit
 import LibSwift
 
 extension Container {
-    public var settingsProvider: Factory<SettingsProvider?> { promised().singleton }
+    public var settingsProvider: Factory<SettingsProvider?> {
+        promised().singleton
+    }
 }
 
 /// Provides access to application settings and configuration.

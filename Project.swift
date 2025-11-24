@@ -152,6 +152,7 @@ enum Modules: String, ModuleInfo {
 
 enum Dependencies: String, CaseIterable {
     case factory = "FactoryKit"
+    case factoryTesting = "FactoryTesting"
     case appMetricaCore = "AppMetricaCore"
     case appMetricaCrashes = "AppMetricaCrashes"
     case keychainAccess = "KeychainAccess"

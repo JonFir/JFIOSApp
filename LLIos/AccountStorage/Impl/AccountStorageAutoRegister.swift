@@ -10,3 +10,4 @@ public class AccountStorageAutoRegister: AutoRegistering {
         Container.shared.accountStorage.register { AccountStorageImpl() }
     }
 }
+

@@ -6,44 +6,28 @@ import Settings
 import FactoryKit
 import Foundation
 import LibSwift
+import FactoryTesting
 
-@Suite("AccountStorage Tests")
+@Suite(
+    "AccountStorage Tests",
+    .container {
+        $0.settingsProvider.register { SettingsProviderMock() }
+    }
+)
 class AccountStorageTests {
     let testBundleID: String
     let testAccount: Account
     let keychainMock: KeychainStorageMock
-    
+
     init() {
         testBundleID = "com.test.AccountStorageTests.\(UUID().uuidString)"
-        
         testAccount = Account(
             id: "test-user-123",
             email: "test@example.com",
             name: "Test User",
             token: "test-token-secret"
         )
-        
-        let testDirectory = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
-        
-        let testSettings = Settings(
-            appMetricaApiKey: "test-key",
-            appName: "TestApp",
-            bundleID: testBundleID,
-            persistenceDirectory: testDirectory
-        )
-        
-        let mockSettingsProvider = MockSettingsProvider(settings: testSettings)
         keychainMock = KeychainStorageMock()
-        
-        Container.shared.logger.register {
-            Logger(handlers: [])
-        }
-        
-        Container.shared.settingsProvider.register {
-            mockSettingsProvider
-        }
-        
         Container.shared.keychainStorageWitService.register { [keychainMock] _ in
             keychainMock
         }
@@ -80,7 +64,7 @@ class AccountStorageTests {
     @Test("Delete account")
     func deleteAccount() async {
         let storage = AccountStorageImpl()
-        
+
         await storage.save(account: testAccount)
         
         var loadedAccount = await storage.load()
@@ -225,23 +209,5 @@ class AccountStorageTests {
             
             #expect(decodedAccount?.id == newAccount.id)
         }
-    }
-}
-
-actor MockSettingsProvider: SettingsProvider {
-    let initialSettings: Settings
-    var settings: Settings
-    
-    init(settings: Settings) {
-        self.initialSettings = settings
-        self.settings = settings
-    }
-    
-    func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnySendableObject {
-        fatalError("Not implemented in mock")
-    }
-    
-    func update(_ updater: @Sendable (inout Settings) -> Void) async {
-        fatalError("Not implemented in mock")
     }
 }

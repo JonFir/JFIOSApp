@@ -2,7 +2,11 @@ import Foundation
 import FactoryKit
 
 extension Container {
-    public var logger: Factory<Logger?> { promised().singleton }
+    public var logger: Factory<Logger?> {
+        promised()
+            .singleton
+            .onTest { Logger(handlers: []) }
+    }
 }
 
 /// Main logging actor that distributes log messages to registered handlers.

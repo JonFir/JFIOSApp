@@ -44,8 +44,8 @@ actor KeychainStorageTests {
         }
         
         let testData = TestData(name: "John", age: 30)
-        try storage.set(testData, forKey: "userData")
-        
+        try storage.setCodable(testData, forKey: "userData")
+
         let result: TestData? = try storage.getCodable(forKey: "userData")
         
         #expect(result == testData)
@@ -68,9 +68,9 @@ actor KeychainStorageTests {
             let value: String
         }
         
-        try storage.set(TestData(value: "first"), forKey: "testKey")
-        try storage.set(TestData(value: "second"), forKey: "testKey")
-        
+        try storage.setCodable(TestData(value: "first"), forKey: "testKey")
+        try storage.setCodable(TestData(value: "second"), forKey: "testKey")
+
         let result: TestData? = try storage.getCodable(forKey: "testKey")
         
         #expect(result?.value == "second")
@@ -92,7 +92,7 @@ actor KeychainStorageTests {
             let name: String
         }
         
-        try storage.set(TestData(name: "test"), forKey: "testKey")
+        try storage.setCodable(TestData(name: "test"), forKey: "testKey")
         try storage.remove(forKey: "testKey")
         
         let result: TestData? = try storage.getCodable(forKey: "testKey")
@@ -148,8 +148,8 @@ actor KeychainStorageTests {
             nested: NestedData(value: "nested")
         )
         
-        try storage.set(testData, forKey: "complexData")
-        
+        try storage.setCodable(testData, forKey: "complexData")
+
         let result: ComplexData? = try storage.getCodable(forKey: "complexData")
         
         #expect(result == testData)
@@ -182,7 +182,7 @@ actor KeychainStorageTests {
         }
         
         try storage.set("stringValue", forKey: "stringKey")
-        try storage.set(TestData(value: "codableValue"), forKey: "codableKey")
+        try storage.setCodable(TestData(value: "codableValue"), forKey: "codableKey")
         
         let stringResult = try storage.getString(forKey: "stringKey")
         let codableResult: TestData? = try storage.getCodable(forKey: "codableKey")
