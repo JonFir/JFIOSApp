@@ -75,7 +75,6 @@ let appTarget: Target = Target.target(
         Modules.logger.apiTarget,
         Modules.settings.apiTarget,
         Modules.navigator.apiTarget,
-        Modules.libUIKit.apiTarget,
     ]
         + Modules.impls.map(\.implTarget)
 )
@@ -101,16 +100,30 @@ let project = Project(
         Modules.settings.apiTarget,
     ])
     + module(moduleInfo: Modules.settings, apiDependencies: [Modules.libSwift.apiTarget])
-    + module(moduleInfo: Modules.libSwift, onlyApi: true, apiDependencies: [Modules.logger.apiTarget])
+    + module(
+        moduleInfo: Modules.libSwift,
+        onlyApi: true,
+        apiDependencies: [Dependencies.keychainAccess.target]
+    )
     + module(moduleInfo: Modules.libUIKit, onlyApi: true)
     + module(moduleInfo: Modules.navigator, implDependencies: [
-        Modules.uiSplash.apiTarget,
-        Modules.libUIKit.apiTarget,
-        Modules.logger.apiTarget,
+        Modules.libSwift.apiTarget,
     ])
     + module(moduleInfo: Modules.uiSplash, implDependencies: [
+        Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
-    ]),
+    ])
+    + module(
+        moduleInfo: Modules.accountStorage,
+        apiDependencies: [
+            Modules.libSwift.apiTarget
+        ],
+        implDependencies: [
+            Modules.logger.apiTarget,
+            Modules.settings.apiTarget,
+            Modules.libSwift.apiTarget,
+        ]
+    ),
     schemes: schemes
 )
 
@@ -122,6 +135,7 @@ enum Modules: String, ModuleInfo {
     case libUIKit = "LibUIKit"
     case navigator = "Navigator"
     case uiSplash = "UISplash"
+    case accountStorage = "AccountStorage"
 
     static var impls: [Modules] {
         [
@@ -130,6 +144,7 @@ enum Modules: String, ModuleInfo {
             .settings,
             .navigator,
             .uiSplash,
+            .accountStorage,
         ]
     }
 }
@@ -138,6 +153,7 @@ enum Dependencies: String, CaseIterable {
     case factory = "FactoryKit"
     case appMetricaCore = "AppMetricaCore"
     case appMetricaCrashes = "AppMetricaCrashes"
+    case keychainAccess = "KeychainAccess"
 }
 
 extension Dependencies {

@@ -1,9 +1,9 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let nameAttribute: Template.Attribute = .required("name")
+private let nameAttribute: Template.Attribute = .required("name")
 
-let template = Template(
+private let template = Template(
     description: "Common module",
     attributes: [
         nameAttribute,

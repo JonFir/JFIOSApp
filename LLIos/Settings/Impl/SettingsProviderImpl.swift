@@ -8,25 +8,13 @@ public actor SettingsProviderImpl: SettingsProvider {
     private let observers = Observers<Settings>()
 
     public init() {
-        let appMetricaApiKey = (Bundle.main.object(forInfoDictionaryKey: "APP_METRICA_KEY") as? String) ?? ""
-
-        let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
-            ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String
-            ?? ""
-
+        let appMetricaApiKey = Bundle.string("APP_METRICA_KEY") ?? ""
+        let appName = Bundle.string("CFBundleDisplayName") ?? Bundle.string("CFBundleName") ?? ""
         let bundleID = Bundle.main.bundleIdentifier ?? ""
         
-        let applicationSupportDirectory = FileManager.default
+        let baseDirectory: URL = FileManager.default
             .urls(for: .applicationSupportDirectory, in: .userDomainMask)
-            .first
-        
-        let baseDirectory: URL
-        if let applicationSupportDirectory {
-            baseDirectory = applicationSupportDirectory
-        } else {
-            baseDirectory = FileManager.default.temporaryDirectory
-        }
-        
+            .first ?? FileManager.default.temporaryDirectory
         let persistenceDirectory = baseDirectory
             .appendingPathComponent("PersistenceFiles", isDirectory: true)
 
@@ -34,7 +22,8 @@ public actor SettingsProviderImpl: SettingsProvider {
             appMetricaApiKey: appMetricaApiKey,
             appName: appName,
             bundleID: bundleID,
-            persistenceDirectory: persistenceDirectory
+            persistenceDirectory: persistenceDirectory,
+            apiHost: URL(string: "http://127.0.0.1:8090")!
         )
         settings = initialSettings
     }
@@ -50,5 +39,11 @@ public actor SettingsProviderImpl: SettingsProvider {
     public func update(_ updater: @Sendable (inout Settings) -> Void) async {
         updater(&settings)
         await observers.notify(settings)
+    }
+}
+
+private extension Bundle {
+    static func string(_ key: String) -> String? {
+        self.main.object(forInfoDictionaryKey: key) as? String
     }
 }

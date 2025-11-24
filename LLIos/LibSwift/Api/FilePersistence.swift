@@ -1,5 +1,4 @@
 import Foundation
-import Logger
 import FactoryKit
 
 /// Shared encoder and decoder for PropertyList serialization.
@@ -61,8 +60,6 @@ public struct FilePersistence<Value: Codable> {
     private let defaultValue: Value
     private var cachedValue: Value?
     
-    @Injected(\.logger) private var logger: Logger?
-    
     private var fileURL: URL {
         directoryURL.appendingPathComponent(filename)
     }
@@ -99,12 +96,6 @@ public struct FilePersistence<Value: Codable> {
     public var wrappedValue: Value {
         mutating get {
             if let cached = cachedValue {
-                logger?.debug(
-                    "Using cached value",
-                    category: .system,
-                    module: "LibSwift",
-                    parameters: ["filename": filename]
-                )
                 return cached
             }
             
@@ -112,26 +103,9 @@ public struct FilePersistence<Value: Codable> {
                 let data = try Data(contentsOf: fileURL)
                 let wrapper = try PropertyListCoders.decoder.decode(Wrapper.self, from: data)
                 cachedValue = wrapper.value
-                logger?.debug(
-                    "Successfully read from file",
-                    category: .system,
-                    module: "LibSwift",
-                    parameters: ["filename": filename, "path": fileURL.path]
-                )
                 return wrapper.value
             } catch {
-                logger?.critical(
-                    "Failed to read file",
-                    category: .system,
-                    module: "LibSwift",
-                    parameters: ["filename": filename, "path": fileURL.path, "error": error.localizedDescription]
-                )
-                logger?.debug(
-                    "Using default value after read error",
-                    category: .system,
-                    module: "LibSwift",
-                    parameters: ["filename": filename]
-                )
+                assertionFailure("\(error)")
                 cachedValue = defaultValue
                 return defaultValue
             }
@@ -149,22 +123,9 @@ public struct FilePersistence<Value: Codable> {
                 let wrapper = Wrapper(value: newValue)
                 let data = try PropertyListCoders.encoder.encode(wrapper)
                 try data.write(to: fileURL, options: .atomic)
-                
-                logger?.debug(
-                    "Successfully written to file",
-                    category: .system,
-                    module: "LibSwift",
-                    parameters: ["filename": filename, "path": fileURL.path]
-                )
             } catch {
-                logger?.critical(
-                    "Failed to write file",
-                    category: .system,
-                    module: "LibSwift",
-                    parameters: ["filename": filename, "path": fileURL.path, "error": error.localizedDescription]
-                )
+                assertionFailure("\(error)")
             }
         }
     }
 }
-
