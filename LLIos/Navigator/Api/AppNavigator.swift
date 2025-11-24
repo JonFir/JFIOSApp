@@ -8,4 +8,6 @@ extension Container {
 public protocol AppNavigator: AnyObject {
     func setup()
     func showSplash()
+    func showAuthFlow()
+    func showMainFlow()
 }

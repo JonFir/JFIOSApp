@@ -6,6 +6,7 @@ import Settings
 import LibSwift
 import LibUIKit
 import Navigator
+import AccountStorage
 
 extension Container {
     @MainActor
@@ -14,6 +15,7 @@ extension Container {
 
 private enum ApplicationInitializatorAsyncSteps: Sendable, CaseIterable {
     case settings
+    case account
 }
 
 /// Manages multi-stage application initialization process.
@@ -32,9 +34,11 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
     @LazyInjected(\.mainWindow) var window
     @LazyInjected(\.settingsProvider) var settingsProvider
     @LazyInjected(\.appNavigator) var appNavigator
+    @LazyInjected(\.accountStorage) var accountStorage
     @Injected(\.logger) var logger
 
     private var settingsListener: AnySendableObject?
+    private var currentAccount: Account?
     private var isShown: Bool = false
     private var completedAsyncSteps: Set<ApplicationInitializatorAsyncSteps> = []
     private var isAppliactionConfigured: Bool = false
@@ -72,6 +76,12 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
                 self.appliactionWillConfigured()
             }
         }
+        
+        Task {
+            self.currentAccount = await accountStorage?.load()
+            self.completedAsyncSteps.insert(.account)
+            self.appliactionWillConfigured()
+        }
     }
 
     /// Performs one-time synchronous setup operations before presenting the UI.
@@ -96,6 +106,14 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
             !isAppliactionConfigured,
             completedAsyncSteps.count == ApplicationInitializatorAsyncSteps.allCases.count
         else { return }
+        
+        isAppliactionConfigured = true
+        
+        if currentAccount != nil {
+            appNavigator?.showMainFlow()
+        } else {
+            appNavigator?.showAuthFlow()
+        }
     }
 
     func scene(

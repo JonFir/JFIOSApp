@@ -2,6 +2,7 @@ import Navigator
 import FactoryKit
 import LibUIKit
 import UISplash
+import FirstModule
 import Logger
 
 final class AppNavigatorImpl: AppNavigator {
@@ -22,6 +23,22 @@ final class AppNavigatorImpl: AppNavigator {
             return
         }
         mainViewController.setViewControllers([splashVC], animated: false)
+    }
+    
+    func showAuthFlow() {
+        guard let firstModuleVC = Container.shared.firstModuleViewController() else {
+            logger?.critical("can't show auth flow", category: .ui, module: "Navigator")
+            return
+        }
+        mainViewController.setViewControllers([firstModuleVC], animated: false)
+    }
+    
+    func showMainFlow() {
+        guard let firstModuleVC = Container.shared.firstModuleViewController() else {
+            logger?.critical("can't show main flow", category: .ui, module: "Navigator")
+            return
+        }
+        mainViewController.setViewControllers([firstModuleVC], animated: false)
     }
 
 }
