@@ -10,6 +10,7 @@ import PackageDescription
             "FactoryKit": Constants.remoteDependenciesType,
             "FactoryTesting": Constants.remoteDependenciesType,
             "KeychainAccess": Constants.remoteDependenciesType,
+            "Alamofire": Constants.remoteDependenciesType,
         ],
         baseSettings: .settings(
             configurations: [
@@ -53,6 +54,7 @@ let package = Package(
         .package(url: "https://github.com/hmlongco/Factory.git", .upToNextMajor(from: "2.4.12")),
         .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", .upToNextMajor(from: "5.0.0")),
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.2.2")),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
     ]
 )
 

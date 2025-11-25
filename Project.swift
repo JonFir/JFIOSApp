@@ -106,6 +106,19 @@ let project = Project(
         apiDependencies: [Dependencies.keychainAccess.target]
     )
     + module(moduleInfo: Modules.libUIKit, onlyApi: true)
+    + module(
+        moduleInfo: Modules.libNetwork,
+        apiDependencies: [
+            Modules.libSwift.apiTarget,
+        ],
+        implDependencies: [
+            Modules.libSwift.apiTarget,
+            Modules.accountStorage.apiTarget,
+            Modules.logger.apiTarget,
+            Modules.settings.apiTarget,
+            Dependencies.alamofire.target,
+        ]
+    )
     + module(moduleInfo: Modules.navigator, implDependencies: [
         Modules.libSwift.apiTarget,
         Modules.firstModule.apiTarget,
@@ -134,6 +147,7 @@ enum Modules: String, ModuleInfo {
     case settings = "Settings"
     case libSwift = "LibSwift"
     case libUIKit = "LibUIKit"
+    case libNetwork = "LibNetwork"
     case navigator = "Navigator"
     case uiSplash = "UISplash"
     case accountStorage = "AccountStorage"
@@ -143,6 +157,7 @@ enum Modules: String, ModuleInfo {
             .firstModule,
             .logger,
             .settings,
+            .libNetwork,
             .navigator,
             .uiSplash,
             .accountStorage,
@@ -156,6 +171,7 @@ enum Dependencies: String, CaseIterable {
     case appMetricaCore = "AppMetricaCore"
     case appMetricaCrashes = "AppMetricaCrashes"
     case keychainAccess = "KeychainAccess"
+    case alamofire = "Alamofire"
 }
 
 extension Dependencies {

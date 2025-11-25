@@ -42,7 +42,7 @@ public actor AccountStorageImpl: AccountStorage {
             currentAccount = account
             await observers.notify(account)
 
-            logger?.info(
+            logger?.debug(
                 "Account saved successfully",
                 category: .domain,
                 module: "AccountStorage",
@@ -126,7 +126,7 @@ public actor AccountStorageImpl: AccountStorage {
         currentAccount = nil
         await observers.notify(nil)
 
-        logger?.info(
+        logger?.debug(
             "Account deleted successfully",
             category: .domain,
             module: "AccountStorage"
