@@ -79,6 +79,18 @@ let appTarget: Target = Target.target(
         + Modules.impls.map(\.implTarget)
 )
 
+let resoursesTarget = Target.target(
+    name: Modules.resources.apiName,
+    destinations: .iOS,
+    product: Constants.moduleType,
+    bundleId: "\(Constants.bundleId).\(Modules.resources.apiName)",
+    infoPlist: .default,
+    resources: [
+        "\(Constants.modulesFolder)/\(Modules.resources.rawValue)/**"
+    ],
+    settings: .settings()
+)
+
 let schemes: [Scheme] = [
     Scheme.scheme(
         name: "QA",
@@ -92,6 +104,7 @@ let project = Project(
     settings: settings,
     targets: [
         appTarget,
+        resoursesTarget,
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
     + module(moduleInfo: Modules.logger, implDependencies: [
@@ -148,11 +161,13 @@ let project = Project(
     ]),
     schemes: schemes,
     resourceSynthesizers: [
-        .assets()
+        .assets(),
+        .files(extensions: ["xcstrings"]),
     ]
 )
 
 enum Modules: String, ModuleInfo {
+    case resources = "Resources"
     case firstModule = "FirstModule"
     case logger = "Logger"
     case settings = "Settings"

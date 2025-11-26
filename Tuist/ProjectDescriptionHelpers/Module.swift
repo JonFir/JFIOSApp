@@ -42,9 +42,11 @@ public func module<Info: ModuleInfo>(
                 product: Constants.moduleType,
                 bundleId: "\(Constants.bundleId).\(moduleInfo.implName)",
                 infoPlist: .default,
+                resources: [
+                    "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Resources/**"
+                ],
                 buildableFolders: [
                     BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Impl"),
-                    BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(moduleInfo.rawValue)/Resources"),
                 ],
                 dependencies: implDependencies + [moduleInfo.apiTarget, .external(name: "FactoryKit")],
                 settings: .settings()

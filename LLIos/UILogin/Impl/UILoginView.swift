@@ -142,9 +142,9 @@ struct UILoginView: View {
                     
                     Button(action: { vm.navigateToRegistration() }) {
                         HStack(spacing: 4) {
-                            Text("New here?")
+                            Text("button.register.title", bundle: .module)
                                 .foregroundColor(.white.opacity(0.7))
-                            Text("Join the Challenge")
+                            Text("button.register.subtitle", bundle: .module)
                                 .foregroundColor(Color(red: 1.0, green: 0.4, blue: 0.3))
                                 .fontWeight(.semibold)
                         }
