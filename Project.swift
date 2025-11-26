@@ -137,7 +137,15 @@ let project = Project(
             Modules.settings.apiTarget,
             Modules.libSwift.apiTarget,
         ]
-    ),
+    )
+    + module(moduleInfo: Modules.uiLogin, implDependencies: [
+        Modules.libSwift.apiTarget,
+        Modules.libUIKit.apiTarget,
+    ])
+    + module(moduleInfo: Modules.uiRegistration, implDependencies: [
+        Modules.libSwift.apiTarget,
+        Modules.libUIKit.apiTarget,
+    ]),
     schemes: schemes
 )
 
@@ -151,6 +159,8 @@ enum Modules: String, ModuleInfo {
     case navigator = "Navigator"
     case uiSplash = "UISplash"
     case accountStorage = "AccountStorage"
+    case uiLogin = "UILogin"
+    case uiRegistration = "UIRegistration"
 
     static var impls: [Modules] {
         [
@@ -161,6 +171,8 @@ enum Modules: String, ModuleInfo {
             .navigator,
             .uiSplash,
             .accountStorage,
+            .uiLogin,
+            .uiRegistration,
         ]
     }
 }
