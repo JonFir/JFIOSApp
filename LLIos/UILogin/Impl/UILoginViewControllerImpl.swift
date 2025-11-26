@@ -6,3 +6,4 @@ import FactoryKit
 final class UILoginViewControllerImpl: UIHostingController<UILoginView>, UILoginViewController {
 
 }
+

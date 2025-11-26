@@ -146,7 +146,10 @@ let project = Project(
         Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
     ]),
-    schemes: schemes
+    schemes: schemes,
+    resourceSynthesizers: [
+        .assets()
+    ]
 )
 
 enum Modules: String, ModuleInfo {
