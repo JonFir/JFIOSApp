@@ -9,5 +9,6 @@ protocol UILoginViewModel: Observable, AnyObject {
     var errorMessage: String? { get }
     
     func login()
+    func navigateToRegistration()
 }
 

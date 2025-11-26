@@ -34,5 +34,9 @@ final class UILoginViewModelImpl: UILoginViewModel {
             isLoading = false
         }
     }
+    
+    func navigateToRegistration() {
+        // TODO: Implement navigation to registration screen
+    }
 }
 

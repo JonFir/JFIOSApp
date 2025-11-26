@@ -8,5 +8,6 @@ final class UILoginViewModelPrev: UILoginViewModel {
     var errorMessage: String? = nil
     
     func login() {}
+    func navigateToRegistration() {}
 }
 
