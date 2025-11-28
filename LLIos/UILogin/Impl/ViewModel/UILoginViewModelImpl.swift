@@ -16,13 +16,13 @@ final class UILoginViewModelImpl: UILoginViewModel {
     var email: String = ""
     var password: String = ""
     var isLoading: Bool = false
-    var errorMessage: String? = nil
-    
+    var errorMessage: (String, String?)?
+
     init() {}
     
     func login() {
         guard !email.isEmpty, !password.isEmpty else {
-            errorMessage = "Please fill in all fields"
+            errorMessage?.0 = "Please fill in all fields"
             return
         }
         

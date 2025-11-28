@@ -10,9 +10,8 @@ public final class UILoginAutoRegister: AutoRegistering {
     
     public func autoRegister() {
         Container.shared.uiLoginViewController.register { @MainActor in
-            return UILoginViewControllerImpl(rootView: UILoginView())
+            return UILoginViewControllerImpl(view: UILoginView())
         }
     }
 }
-
 

@@ -6,5 +6,7 @@ extension Container {
     public var uiLoginViewController: Factory<UILoginViewController?> { promised() }
 }
 
-public protocol UILoginViewController: UIViewController {}
+public protocol UILoginViewController: UIViewController {
+    func replaceAppFlow()
+}
 

@@ -6,7 +6,7 @@ protocol UILoginViewModel: Observable, AnyObject {
     var email: String { get set }
     var password: String { get set }
     var isLoading: Bool { get }
-    var errorMessage: String? { get }
+    var errorMessage: (String, String?)? { get }
     
     func login()
     func navigateToRegistration()

@@ -6,6 +6,7 @@ import Settings
 import LibSwift
 import LibUIKit
 import Navigator
+import UILogin
 import AccountStorage
 
 extension Container {
@@ -110,9 +111,9 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
         isAppliactionConfigured = true
         
         if currentAccount != nil {
-            appNavigator?.showMainFlow()
+            Container.shared.uiLoginViewController()?.replaceAppFlow()
         } else {
-            appNavigator?.showAuthFlow()
+            Container.shared.uiLoginViewController()?.replaceAppFlow()
         }
     }
 

@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-public final class BaseViewController: UIHostingController<AnyView> {
+open class BaseViewController: UIHostingController<AnyView> {
 
     public init(view: any View) {
         let view = AnyView(view)
@@ -14,7 +14,7 @@ public final class BaseViewController: UIHostingController<AnyView> {
     }
 
     @available(*, deprecated, message: "use init(view:) instead")
-    @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+    @MainActor @preconcurrency required dynamic public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

@@ -13,3 +13,6 @@ protocol UIRegistrationViewModel: Observable, AnyObject {
 }
 
 
+
+
+

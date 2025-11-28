@@ -9,14 +9,9 @@ public class UISplashAutoRegister: AutoRegistering {
 
     public func autoRegister() {
         Container.shared.uiSplashViewController.register { @MainActor in
-            BaseViewController(view: UISplashView())
+            UISplashViewControllerImpl(view: UISplashView())
         }
     }
 }
 
-struct UISplashView: View {
-    var body: some View {
-        ProgressView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    }
-}
+

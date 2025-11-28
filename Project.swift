@@ -134,11 +134,15 @@ let project = Project(
     )
     + module(moduleInfo: Modules.navigator, implDependencies: [
         Modules.libSwift.apiTarget,
-        Modules.firstModule.apiTarget,
+        Modules.uiSplash.apiTarget,
+        Modules.logger.apiTarget,
     ])
     + module(moduleInfo: Modules.uiSplash, implDependencies: [
         Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
+        Modules.navigator.apiTarget,
+        Modules.logger.apiTarget,
+        Modules.uiComponents.apiTarget,
     ])
     + module(
         moduleInfo: Modules.accountStorage,
@@ -154,10 +158,17 @@ let project = Project(
     + module(moduleInfo: Modules.uiLogin, implDependencies: [
         Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
+        Modules.uiComponents.apiTarget,
+        Modules.resources.apiTarget,
+        Modules.navigator.apiTarget,
+        Modules.logger.apiTarget,
     ])
     + module(moduleInfo: Modules.uiRegistration, implDependencies: [
         Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
+    ])
+    + module(moduleInfo: Modules.uiComponents, onlyApi: true, apiDependencies: [
+        Modules.resources.apiTarget,
     ]),
     schemes: schemes,
     resourceSynthesizers: [
@@ -179,6 +190,7 @@ enum Modules: String, ModuleInfo {
     case accountStorage = "AccountStorage"
     case uiLogin = "UILogin"
     case uiRegistration = "UIRegistration"
+    case uiComponents = "UIComponents"
 
     static var impls: [Modules] {
         [

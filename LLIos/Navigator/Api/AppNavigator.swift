@@ -1,4 +1,5 @@
 import FactoryKit
+import UIKit
 
 extension Container {
     public var appNavigator: Factory<AppNavigator?> { promised() }
@@ -6,8 +7,9 @@ extension Container {
 
 @MainActor
 public protocol AppNavigator: AnyObject {
+
+    func push(_ viewController: UIViewController, animated: Bool)
+    func replace(_ viewControllers: [UIViewController], animated: Bool)
+
     func setup()
-    func showSplash()
-    func showAuthFlow()
-    func showMainFlow()
 }
