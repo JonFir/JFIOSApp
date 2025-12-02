@@ -5,7 +5,7 @@ import FactoryKit
 extension Container {
     @MainActor
     var uiLoginViewModel: Factory<UILoginViewModel> {
-        self { @MainActor in UILoginViewModelImpl() }.shared
+        self { @MainActor in UILoginViewModelImpl() }
     }
 }
 

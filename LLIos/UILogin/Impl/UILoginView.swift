@@ -3,41 +3,52 @@ import FactoryKit
 import UIComponents
 import Resources
 
+private enum UILoginViewFocusedField: Int, Hashable {
+   case email
+   case password
+}
+
 struct UILoginView: View {
     @State var vm = resolve(\.uiLoginViewModel)
+    @FocusState private var focusedField: UILoginViewFocusedField?
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer().frame(height: 60)
-            HeaderView().padding(.bottom, 60)
+        ScrollView {
+            VStack(spacing: 0) {
+                Spacer().frame(height: 60)
 
-            VStack(spacing: 20) {
-                DefaultTextField(
-                    title: String(localized: "textFiled.email.title", bundle: .module),
-                    text: $vm.email
-                )
-                DefaultTextField(
-                    title: String(localized: "textFiled.password.title", bundle: .module),
-                    isSecure: true,
-                    text: $vm.password
-                )
+                HeaderView().padding(.bottom, 60)
 
-                if let errorMessage = vm.errorMessage {
-                    InlineErrorView(message: errorMessage.0, description: errorMessage.1)
-                        .padding(.top, 4)
-                        .transition(.slide)
+                VStack(spacing: 20) {
+                    EmailField(
+                        vm: vm,
+                        focusedField: $focusedField
+                    )
+
+                    PasswordField(
+                        vm: vm,
+                        focusedField: $focusedField
+                    )
+
+                    if let errorMessage = vm.errorMessage {
+                        InlineErrorView(message: errorMessage.0, description: errorMessage.1)
+                            .padding(.top, 4)
+                            .transition(.slide)
+                    }
+
+                    LoginButton(vm: vm)
+                        .padding(.top, 12)
+
+                    RegisterButton(vm: vm)
+                        .padding(.top, 8)
                 }
+                .padding(.horizontal, 32)
 
-                LoginButton(vm: vm)
-                    .padding(.top, 12)
-
-                RegisterButton(vm: vm)
-                    .padding(.top, 8)
+                Spacer().frame(height: 60)
             }
-            .padding(.horizontal, 32)
-
-            Spacer()
-        }.backgroundGradient()
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .backgroundGradient()
     }
 }
 
@@ -119,6 +130,41 @@ private struct RegisterButton: View {
         )
         .buttonStyle(.inline)
         .disabled(vm.isLoading)
+    }
+}
+
+private struct EmailField: View {
+    let vm: UILoginViewModel
+    @FocusState.Binding var focusedField: UILoginViewFocusedField?
+
+    var body: some View {
+        DefaultTextField(
+            title: String(localized: "textFiled.email.title", bundle: .module),
+            text: .init(get: { vm.email }, set: { vm.email = $0 })
+        )
+        .focused($focusedField, equals: .email)
+        .submitLabel(.next)
+        .onSubmit {
+            focusedField = .password
+        }
+    }
+}
+
+private struct PasswordField: View {
+    let vm: UILoginViewModel
+    @FocusState.Binding var focusedField: UILoginViewFocusedField?
+
+    var body: some View {
+        DefaultTextField(
+            title: String(localized: "textFiled.password.title", bundle: .module),
+            isSecure: true,
+            text: .init(get: { vm.password }, set: { vm.password = $0 })
+        )
+        .focused($focusedField, equals: .password)
+        .submitLabel(.done)
+        .onSubmit {
+            vm.login()
+        }
     }
 }
 
