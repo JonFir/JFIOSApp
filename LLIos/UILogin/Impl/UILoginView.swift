@@ -59,14 +59,12 @@ private struct HeaderView: View {
                 .shadow(color: ResourcesAsset.shadowRed.swiftUIColor, radius: 20)
 
             Text("header.title", bundle: .module)
-                .font(.system(size: 28, weight: .black))
+                .textStyle(.title)
                 .foregroundColor(ResourcesAsset.textPrimary.swiftUIColor)
-                .tracking(2)
 
             Text("header.subtitle", bundle: .module)
-                .font(.system(size: 14, weight: .medium))
+                .textStyle(.subtitle)
                 .foregroundColor(ResourcesAsset.textSecondary.swiftUIColor)
-                .tracking(1)
         }
     }
 }

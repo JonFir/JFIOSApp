@@ -22,10 +22,8 @@ public struct DefaultTextField: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.system(size: 12, weight: .semibold))
+                .textStyle(.fieldLabel)
                 .foregroundColor(ResourcesAsset.textPrimary.swiftUIColor.opacity(0.8))
-                .textCase(.uppercase)
-                .tracking(1)
 
             UniversaltextField(isSecure: isSecure, text: text)
                 .foregroundColor(ResourcesAsset.textPrimary.swiftUIColor)

@@ -107,15 +107,22 @@ VStack { /* контент */ }
 
 ---
 
-### 6. TextStyle - Стили текста
+### 6. FontStyles - Стили шрифтов
 
-Протокол для переиспользуемых стилей текста.
+Предопределенные стили для типографики приложения.
 
 ```swift
+Text("WARMING UP").textStyle(.title)
+Text("Начни свой путь").textStyle(.subtitle)
+Text("Email").textStyle(.fieldLabel)
+Text("Основной текст").textStyle(.body)
+
+// Кнопки
 Text("LOGIN").textStyle(.primaryButton)
 Text("Skip").textStyle(.inlineButton)
 ```
 
+📄 [FontStyles.swift](../LLIos/UIComponents/Api/FontStyles.swift)  
 📄 [TextStyle.swift](../LLIos/UIComponents/Api/TextStyle.swift)
 
 ---
@@ -142,7 +149,16 @@ Text("Skip").textStyle(.inlineButton)
    TextField("Email", text: $email).padding().background(...)
    ```
 
-3. **Используйте стили кнопок**
+3. **Используйте стили шрифтов**
+   ```swift
+   // ✅ Хорошо
+   Text("WARMING UP").textStyle(.title)
+   
+   // ❌ Плохо
+   Text("WARMING UP").font(.system(size: 28, weight: .black)).tracking(2)
+   ```
+
+4. **Используйте стили кнопок**
    ```swift
    // ✅ Хорошо
    Button("Login") { }.buttonStyle(.primary)
@@ -151,7 +167,7 @@ Text("Skip").textStyle(.inlineButton)
    Button("Login") { }.background(Color.red)
    ```
 
-4. **Используйте backgroundGradient() для фона**
+5. **Используйте backgroundGradient() для фона**
    ```swift
    // ✅ Хорошо
    VStack { }.backgroundGradient()
@@ -183,13 +199,16 @@ Text("Skip").textStyle(.inlineButton)
 
 ### 🎯 Типографика
 
-| Элемент | Стиль |
-|---------|-------|
-| Заголовки | `.font(.system(size: 28, weight: .black)).tracking(2)` |
-| Подзаголовки | `.font(.system(size: 14, weight: .medium)).tracking(1)` |
-| Кнопки | Используйте `.textStyle(.primaryButton)` или `.textStyle(.inlineButton)` |
-| Лейблы полей | `.font(.system(size: 12, weight: .semibold)).textCase(.uppercase).tracking(1)` |
-| Основной текст | `.font(.system(size: 15))` |
+| Элемент | Стиль | Пример |
+|---------|-------|--------|
+| Заголовки | `.textStyle(.title)` | `Text("WARMING UP").textStyle(.title)` |
+| Подзаголовки | `.textStyle(.subtitle)` | `Text("Начни свой путь").textStyle(.subtitle)` |
+| Кнопки (основные) | `.textStyle(.primaryButton)` | `Text("LOGIN").textStyle(.primaryButton)` |
+| Кнопки (второстепенные) | `.textStyle(.inlineButton)` | `Text("Skip").textStyle(.inlineButton)` |
+| Лейблы полей | `.textStyle(.fieldLabel)` | `Text("Email").textStyle(.fieldLabel)` |
+| Основной текст | `.textStyle(.body)` | `Text("Описание").textStyle(.body)` |
+
+**Важно:** Всегда используйте `.textStyle()` вместо прямого указания шрифтов для консистентности дизайна.
 
 ### 🌟 Эффекты
 
