@@ -25,7 +25,7 @@ struct UILoginView: View {
                 if let errorMessage = vm.errorMessage {
                     InlineErrorView(message: errorMessage.0, description: errorMessage.1)
                         .padding(.top, 4)
-                        .transition(.scale(scale: 0.8, anchor: .top))
+                        .transition(.slide)
                 }
 
                 LoginButton(vm: vm)
@@ -75,7 +75,9 @@ private struct LoginButton: View {
     var body: some View {
         Button(
             action: {
-                vm.login()
+                withAnimation(.easeInOut) {
+                    vm.login()
+                }
             },
             label: {
                 HStack {
@@ -101,7 +103,7 @@ private struct RegisterButton: View {
     var body: some View {
         Button(
             action: {
-                withAnimation(.spring()) {
+                withAnimation(.easeInOut) {
                     vm.navigateToRegistration()
                 }
             },
