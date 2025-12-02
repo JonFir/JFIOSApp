@@ -11,8 +11,3 @@ protocol UIRegistrationViewModel: Observable, AnyObject {
     
     func register()
 }
-
-
-
-
-

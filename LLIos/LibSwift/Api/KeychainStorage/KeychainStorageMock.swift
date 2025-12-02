@@ -51,4 +51,3 @@ public final class KeychainStorageMock: KeychainStorage, @unchecked Sendable {
         storage.removeValue(forKey: key)
     }
 }
-

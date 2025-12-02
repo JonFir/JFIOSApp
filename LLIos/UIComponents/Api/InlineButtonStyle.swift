@@ -50,7 +50,9 @@ public struct InlineButtonTextStyle: TextStyle {
 
 #Preview {
     VStack(spacing: 15) {
-        Button(action: { print("Pressed") }) {
+        Button {
+            print("Pressed")
+        } label: {
             HStack {
                 Text("START TRAINING").textStyle(.primaryButton)
                 Image(systemName: "arrow.right")
@@ -59,7 +61,9 @@ public struct InlineButtonTextStyle: TextStyle {
         }
         .buttonStyle(.inline)
 
-        Button(action: { print("Pressed") }) {
+        Button {
+            print("Pressed")
+        } label: {
             Label("Disabled", systemImage: "star")
                 .frame(maxWidth: .infinity)
         }

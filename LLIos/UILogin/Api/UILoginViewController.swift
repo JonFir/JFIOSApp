@@ -9,4 +9,3 @@ extension Container {
 public protocol UILoginViewController: UIViewController {
     func replaceAppFlow()
 }
-

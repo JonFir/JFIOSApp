@@ -18,6 +18,3 @@ final class UISplashViewControllerImpl: BaseViewController, UISplashViewControll
     }
 
 }
-
-
-

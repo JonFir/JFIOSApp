@@ -17,7 +17,3 @@ final class UILoginViewControllerImpl: BaseViewController, UILoginViewController
         navigator?.replace([vc], animated: false)
     }
 }
-
-
-
-

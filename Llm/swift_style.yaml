@@ -1,3 +1,5 @@
+- lint: На проекте используется SwiftLint для линтинга кода.
+  - run: для проверки запусти swiftlint
 - struct:
   - sendable: |
       All structures need to be marked up with either a global actor or '@Sendable'.

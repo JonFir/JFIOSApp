@@ -15,8 +15,3 @@ extension Container {
 
 /// Protocol for registration screen view controller
 public protocol UIRegistrationViewController: UIViewController {}
-
-
-
-
-

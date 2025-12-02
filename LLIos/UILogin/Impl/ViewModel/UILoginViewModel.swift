@@ -11,4 +11,3 @@ protocol UILoginViewModel: Observable, AnyObject {
     func login()
     func navigateToRegistration()
 }
-

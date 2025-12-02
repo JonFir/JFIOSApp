@@ -16,28 +16,86 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LLIos" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="0.0" y="263.66666666666669" width="393" height="43"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                <color key="textColor" name="PrimaryRed"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ZvK-8A-abc">
+                                <rect key="frame" x="16" y="230" width="361" height="145"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flame.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Icon-Top">
+                                        <rect key="frame" x="0.0" y="0.0" width="361" height="60"/>
+                                        <color key="tintColor" name="PrimaryRed"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="Icon-Top-Height"/>
+                                        </constraints>
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50" scale="large" weight="semibold"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LLIos" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
+                                        <rect key="frame" x="0.0" y="80" width="361" height="55"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="48" weight="black"/>
+                                        <color key="textColor" name="PrimaryRed"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ENERGY • STRENGTH • MOTIVATION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sub-tl-lbl">
+                                        <rect key="frame" x="0.0" y="155" width="361" height="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11" weight="bold"/>
+                                        <color key="textColor" name="AccentLight"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Emoji-Bottom-Stack">
+                                <rect key="frame" x="100" y="420" width="193" height="50"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="figure.strengthtraining.traditional" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Icon-Left">
+                                        <rect key="frame" x="0.0" y="-0.33333333333333215" width="37.666666666666664" height="51"/>
+                                        <color key="tintColor" name="AccentLight"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Icon-Left-Height"/>
+                                        </constraints>
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="38" scale="large" weight="medium"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bolt.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Icon-Center">
+                                        <rect key="frame" x="77.666666666666686" y="0.66666666666667425" width="38" height="49"/>
+                                        <color key="tintColor" name="AccentLight"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Icon-Center-Height"/>
+                                        </constraints>
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="38" scale="large" weight="medium"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="target" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Icon-Right">
+                                        <rect key="frame" x="155.66666666666666" y="0.66666666666667425" width="37.333333333333343" height="49"/>
+                                        <color key="tintColor" name="AccentLight"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Icon-Right-Height"/>
+                                        </constraints>
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="38" scale="large" weight="medium"/>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" name="BackgroundDark"/>
                         <constraints>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="Q3B-4B-g5h"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="1" id="moa-c2-u7t"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="x7j-FC-K8j"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="ZvK-8A-abc" secondAttribute="centerX" id="Q3B-4B-g5h"/>
+                            <constraint firstItem="ZvK-8A-abc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="1" id="moa-c2-u7t"/>
+                            <constraint firstItem="ZvK-8A-abc" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" constant="16" id="x7j-FC-K8j"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="ZvK-8A-abc" secondAttribute="trailing" constant="16" id="ZvK-trailing"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="Emoji-Bottom-Stack" secondAttribute="centerX" id="Emoji-Bottom-CenterX"/>
+                            <constraint firstItem="Emoji-Bottom-Stack" firstAttribute="top" secondItem="ZvK-8A-abc" secondAttribute="bottom" constant="40" id="Emoji-Bottom-Top"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-633" y="145"/>
+            <point key="canvasLocation" x="-1080.1526717557251" y="150.70422535211267"/>
         </scene>
     </scenes>
     <resources>
+        <image name="bolt.fill" catalog="system" width="128" height="128"/>
+        <image name="figure.strengthtraining.traditional" catalog="system" width="77" height="128"/>
+        <image name="flame.fill" catalog="system" width="108" height="128"/>
+        <image name="target" catalog="system" width="128" height="115"/>
+        <namedColor name="AccentLight">
+            <color red="1" green="0.40000000596046448" blue="0.30000001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BackgroundDark">
             <color red="0.15000000596046448" green="0.10000000149011612" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

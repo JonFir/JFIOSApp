@@ -1,6 +1,5 @@
 import FactoryKit
 import UIKit
-import Navigator
 import LibUIKit
 
 extension Container {

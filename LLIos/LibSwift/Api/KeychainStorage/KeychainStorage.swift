@@ -9,7 +9,6 @@ extension Container {
     }
 }
 
-
 /// Protocol for secure storage of sensitive data in Keychain.
 ///
 /// KeychainStorage provides a simple interface for storing and retrieving
@@ -74,4 +73,3 @@ public protocol KeychainStorage: Sendable {
     /// - Throws: An error if the removal operation fails
     func remove(forKey key: String) throws
 }
-

@@ -50,4 +50,3 @@ public actor SettingsProviderMock: SettingsProvider {
         updateCallCount = 0
     }
 }
-

@@ -36,7 +36,6 @@ final class UILoginViewModelImpl: UILoginViewModel {
     }
     
     func navigateToRegistration() {
-        // TODO: Implement navigation to registration screen
+        // Navigation to registration screen will be implemented
     }
 }
-

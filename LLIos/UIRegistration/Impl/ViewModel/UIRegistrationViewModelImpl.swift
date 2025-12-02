@@ -41,8 +41,3 @@ final class UIRegistrationViewModelImpl: UIRegistrationViewModel {
         }
     }
 }
-
-
-
-
-

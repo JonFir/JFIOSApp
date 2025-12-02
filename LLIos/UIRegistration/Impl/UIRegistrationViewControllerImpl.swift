@@ -6,8 +6,3 @@ import FactoryKit
 final class UIRegistrationViewControllerImpl: UIHostingController<UIRegistrationView>, UIRegistrationViewController {
 
 }
-
-
-
-
-

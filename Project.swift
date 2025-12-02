@@ -137,13 +137,19 @@ let project = Project(
         Modules.uiSplash.apiTarget,
         Modules.logger.apiTarget,
     ])
-    + module(moduleInfo: Modules.uiSplash, implDependencies: [
-        Modules.libSwift.apiTarget,
-        Modules.libUIKit.apiTarget,
-        Modules.navigator.apiTarget,
-        Modules.logger.apiTarget,
-        Modules.uiComponents.apiTarget,
-    ])
+    + module(
+        moduleInfo: Modules.uiSplash,
+        apiDependencies: [
+            Modules.libUIKit.apiTarget,
+        ],
+        implDependencies: [
+            Modules.libSwift.apiTarget,
+            Modules.libUIKit.apiTarget,
+            Modules.navigator.apiTarget,
+            Modules.logger.apiTarget,
+            Modules.uiComponents.apiTarget,
+        ]
+    )
     + module(
         moduleInfo: Modules.accountStorage,
         apiDependencies: [

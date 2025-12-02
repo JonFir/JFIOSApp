@@ -31,7 +31,9 @@ struct UIRegistrationView: View {
                     .font(.caption)
             }
             
-            Button(action: { vm.register() }) {
+            Button {
+                vm.register()
+            } label: {
                 if vm.isLoading {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -61,8 +63,3 @@ struct UIRegistrationView_Previews: PreviewProvider {
         UIRegistrationView()
     }
 }
-
-
-
-
-

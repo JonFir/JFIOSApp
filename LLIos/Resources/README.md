@@ -43,28 +43,15 @@
 ```swift
 import SwiftUI
 
-// Отдельные цвета
+// Использование цветов через ResourcesAsset
 Text("Title")
-    .foregroundColor(.appTextPrimary)
+    .foregroundColor(ResourcesAsset.textPrimary.swiftUIColor)
 
 Button("Action") { }
-    .background(.appPrimaryRed)
+    .background(ResourcesAsset.primaryRed.swiftUIColor)
 
-// Предопределенные градиенты
 Rectangle()
-    .fill(Color.appPrimaryGradient) // Красный градиент для кнопок
-
-ZStack {
-    Color.appBackgroundGradient // Градиент фона
-        .ignoresSafeArea()
-}
-
-// Кастомные градиенты
-LinearGradient(
-    colors: [.appPrimaryRed, .appSecondaryRed],
-    startPoint: .leading,
-    endPoint: .trailing
-)
+    .fill(ResourcesAsset.backgroundDark.swiftUIColor)
 ```
 
 ### UIKit
@@ -72,10 +59,10 @@ LinearGradient(
 ```swift
 import UIKit
 
-// Использование цветов из Asset Catalog
-view.backgroundColor = UIColor(named: "BackgroundDark")
-label.textColor = UIColor(named: "TextPrimary")
-button.tintColor = UIColor(named: "PrimaryRed")
+// Использование цветов через ResourcesAsset
+view.backgroundColor = ResourcesAsset.backgroundDark.color
+label.textColor = ResourcesAsset.textPrimary.color
+button.tintColor = ResourcesAsset.primaryRed.color
 ```
 
 ## 🎯 Рекомендации по дизайну
@@ -101,10 +88,6 @@ button.tintColor = UIColor(named: "PrimaryRed")
 ### Эффекты
 - **Shadow для кнопок**: `ShadowRed` с radius 15, y: 5
 - **Glow для иконок**: `ShadowRed` с radius 20
-
-## 🌓 Dark Mode Support
-
-Все цвета поддерживают адаптацию к темной теме. В данный момент приложение оптимизировано для dark mode, но при необходимости легко добавить варианты для light mode в `Contents.json` каждого цвета.
 
 ## 🔥 Философия палитры
 

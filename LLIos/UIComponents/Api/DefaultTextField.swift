@@ -1,7 +1,6 @@
 import SwiftUI
 import Resources
 
-
 public struct DefaultTextField: View {
     private let title: String
     private let isSecure: Bool

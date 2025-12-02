@@ -1,7 +1,7 @@
 import SwiftUI
 
 public protocol TextStyle {
-    associatedtype Body : View
+    associatedtype Body: View
 
     @ViewBuilder
     func apply(text: Text) -> Body
