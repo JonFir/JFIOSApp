@@ -28,10 +28,6 @@ public actor SettingsProviderImpl: SettingsProvider {
         settings = initialSettings
     }
     
-    public func getSettings() -> Settings {
-        return settings
-    }
-    
     public func subscribe(_ callback: @escaping @Sendable (Settings) async -> Void) async -> AnySendableObject {
         await observers.subscribe(callback, settings)
     }

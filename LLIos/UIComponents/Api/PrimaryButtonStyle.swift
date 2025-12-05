@@ -1,5 +1,6 @@
 import SwiftUI
 import Resources
+import LibSwiftUI
 
 public extension ButtonStyle where Self == PrimaryButtonStyle {
     @inlinable

@@ -1,4 +1,5 @@
 import SwiftUI
+import LibSwiftUI
 
 @Observable
 final class UILoginViewModelPrev: UILoginViewModel {

@@ -1,6 +1,7 @@
 import SwiftUI
 import FactoryKit
 import LibSwift
+import LibSwiftUI
 
 /// Factory provider for UILogin view model
 extension Container {

@@ -187,6 +187,7 @@ let project = Project(
         Modules.resources.apiTarget,
         Modules.navigator.apiTarget,
         Modules.logger.apiTarget,
+        Modules.libSwiftUI.apiTarget,
     ])
     + module(moduleInfo: Modules.uiRegistration, implDependencies: [
         Modules.libSwift.apiTarget,
@@ -194,7 +195,9 @@ let project = Project(
     ])
     + module(moduleInfo: Modules.uiComponents, onlyApi: true, apiDependencies: [
         Modules.resources.apiTarget,
-    ]),
+        Modules.libSwiftUI.apiTarget,
+    ])
+    + module(moduleInfo: Modules.libSwiftUI, onlyApi: true),
     schemes: schemes,
     resourceSynthesizers: [
         .assets(),
@@ -217,6 +220,7 @@ enum Modules: String, ModuleInfo {
     case uiLogin = "UILogin"
     case uiRegistration = "UIRegistration"
     case uiComponents = "UIComponents"
+    case libSwiftUI = "LibSwiftUI"
 
     static var impls: [Modules] {
         [
