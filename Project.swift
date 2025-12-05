@@ -91,6 +91,24 @@ let resoursesTarget = Target.target(
     settings: .settings()
 )
 
+let libTestsTarget = Target.target(
+    name: Modules.libTests.apiName,
+    destinations: .iOS,
+    product: Constants.moduleType,
+    bundleId: "\(Constants.bundleId).\(Modules.libTests.apiName)",
+    infoPlist: .default,
+    buildableFolders: [
+        BuildableFolder(stringLiteral: "\(Constants.modulesFolder)/\(Modules.libTests.rawValue)"),
+    ],
+    dependencies: [
+        Dependencies.alamofire.target,
+        Dependencies.factory.target,
+        Modules.libNetwork.apiTarget,
+        .sdk(name: "Testing", type: .framework),
+    ],
+    settings: .settings()
+)
+
 let schemes: [Scheme] = [
     Scheme.scheme(
         name: "QA",
@@ -105,6 +123,7 @@ let project = Project(
     targets: [
         appTarget,
         resoursesTarget,
+        libTestsTarget,
     ]
     + module(moduleInfo: Modules.firstModule, implDependencies: [Modules.logger.apiTarget])
     + module(moduleInfo: Modules.logger, implDependencies: [
@@ -185,6 +204,7 @@ let project = Project(
 
 enum Modules: String, ModuleInfo {
     case resources = "Resources"
+    case libTests = "LibTests"
     case firstModule = "FirstModule"
     case logger = "Logger"
     case settings = "Settings"

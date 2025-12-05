@@ -3,11 +3,53 @@ import SwiftUI
 /// View model protocol for login screen
 @MainActor
 protocol UILoginViewModel: Observable, AnyObject {
-    var email: String { get set }
-    var password: String { get set }
+    var email: VMField<String> { get set }
+    var password: VMField<String> { get set }
     var isLoading: Bool { get }
     var errorMessage: (String, String?)? { get }
     
     func login()
     func navigateToRegistration()
+}
+
+
+public struct VMField<T> where T: Sendable {
+    public var text: String
+    private(set) public var value: VMFieldValue<T>
+    let transform: @Sendable (String) -> VMFieldValue<T>
+
+    public init(
+        _ text: String,
+        transform: @Sendable @escaping (String) -> VMFieldValue<T>)
+    {
+        self.text = text
+        self.value = .empty
+        self.transform = transform
+    }
+
+    public mutating func updateValue() {
+        value = transform(text)
+    }
+    
+}
+
+public enum VMFieldValue<T>: Sendable where T: Sendable {
+    case value(T)
+    case error(String)
+    case empty
+
+    var value: T? {
+        guard case .value(let value) = self else { return nil }
+        return value
+    }
+
+    var error: String? {
+        guard case .error(let error) = self else { return nil }
+        return error
+    }
+
+    var isEmpty: Bool {
+        guard case .empty = self else { return false }
+        return true
+    }
 }

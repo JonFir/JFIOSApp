@@ -3,7 +3,7 @@ import LibSwift
 import FactoryKit
 
 extension Container {
-    public var networkProvider: Factory<NetworkProvider?> { promised().singleton }
+    public var networkSession: Factory<Session?> { promised().singleton }
 }
 
 public protocol NetworkProvider: Sendable {

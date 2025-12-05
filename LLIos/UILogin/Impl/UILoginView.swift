@@ -140,7 +140,7 @@ private struct EmailField: View {
     var body: some View {
         DefaultTextField(
             title: String(localized: "textFiled.email.title", bundle: .module),
-            text: .init(get: { vm.email }, set: { vm.email = $0 })
+            text: .init(get: { vm.email.text }, set: { vm.email.text = $0 })
         )
         .focused($focusedField, equals: .email)
         .submitLabel(.next)
@@ -158,7 +158,7 @@ private struct PasswordField: View {
         DefaultTextField(
             title: String(localized: "textFiled.password.title", bundle: .module),
             isSecure: true,
-            text: .init(get: { vm.password }, set: { vm.password = $0 })
+            text: .init(get: { vm.password.text }, set: { vm.password.text = $0 })
         )
         .focused($focusedField, equals: .password)
         .submitLabel(.done)

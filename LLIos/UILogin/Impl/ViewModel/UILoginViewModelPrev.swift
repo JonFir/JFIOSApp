@@ -2,8 +2,8 @@ import SwiftUI
 
 @Observable
 final class UILoginViewModelPrev: UILoginViewModel {
-    var email: String = "preview@example.com"
-    var password: String = "password"
+    var email = VMField<String>("preview@example.com") { .value($0) }
+    var password = VMField<String>("preview@example.com") { .value($0) }
     var isLoading: Bool = false
     var errorMessage: (String, String?)?
 
