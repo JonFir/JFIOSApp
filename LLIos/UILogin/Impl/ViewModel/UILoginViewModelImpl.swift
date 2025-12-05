@@ -15,7 +15,7 @@ extension Container {
 final class UILoginViewModelImpl: UILoginViewModel {
     
     var email = VMField<String>("") { text in
-        if (try? text.matches(#"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"#)) == true {
+        if (try? text.matches(#"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#)) == true {
             return .value(text)
         } else {
             return .error("Isn't a valid email")
@@ -38,7 +38,10 @@ final class UILoginViewModelImpl: UILoginViewModel {
         email.updateValue()
         password.updateValue()
 
-        guard !email.value.isEmpty, !password.value.isEmpty else {
+        guard
+            let email = email.value.value,
+            let password = password.value.value
+        else {
             errorMessage?.0 = "Please fill in all fields"
             return
         }
