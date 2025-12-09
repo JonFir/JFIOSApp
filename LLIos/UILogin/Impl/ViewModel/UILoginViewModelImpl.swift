@@ -60,17 +60,17 @@ final class UILoginViewModelImpl: UILoginViewModel {
             var filedError: [String] = []
             if !(try email.matches(#"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#)) {
                 logger.info("Login.Email.Invalid", category: .ui, module: "UILogin", parameters: ["email": email])
-                filedError.append("Email isn't valid")
+                filedError.append(String(localized: "error.email.invalid", bundle: .module))
             }
 
             if !(try password.matches(#"^(?=.*[A-ZА-Я])(?=.*[a-zа-я])(?=.*\d)(?=.*[^A-Za-zА-Яа-я0-9]).{8,}$"#)) {
                 logger.info("Login.Password.Invalid", category: .ui, module: "UILogin")
-                filedError.append("Password isn't valid")
+                filedError.append(String(localized: "error.password.invalid", bundle: .module))
             }
 
             guard filedError.isEmpty else {
                 throw UILoginViewModelError(
-                    "Incorrect credentials",
+                    String(localized: "error.credentials.incorrect", bundle: .module),
                     filedError.joined(separator: "\n")
                 )
             }
@@ -102,8 +102,8 @@ final class UILoginViewModelImpl: UILoginViewModel {
             errorMessage = error
         } catch is APIErrorResponse {
             errorMessage = UILoginViewModelError(
-                "Incorrect credentials",
-                "Wrong email or password"
+                String(localized: "error.credentials.incorrect", bundle: .module),
+                String(localized: "error.credentials.wrong", bundle: .module)
             )
         } catch {
             errorMessage = .unknown

@@ -22,8 +22,10 @@ struct UILoginViewModelError: Error, Equatable, Sendable {
         self.subtitle = subtitle
     }
 
-    static let unknown = UILoginViewModelError(
-        "Unknown error",
-        "Try again later"
-    )
+    static var unknown: UILoginViewModelError {
+        UILoginViewModelError(
+            String(localized: "error.unknown.title", bundle: .module),
+            String(localized: "error.unknown.subtitle", bundle: .module)
+        )
+    }
 }
