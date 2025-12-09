@@ -1,0 +1,243 @@
+# yaml-language-server: $schema=llm_task.schema.json
+task:
+  - id: "write_tests_plan"
+    action: "Составление плана тестирования"
+    instruction: |
+      Напиши план написания тестов для указанного модуля или компонента, следуя всем правилам и шагам, описанным ниже.
+      План представляет собой набор пустых тестовых методов для указанного модуля или компонента с комеммтариями описывающими будущий тест.
+    rules:
+      - rule: "Не добавляй импортов, кроме Testing."
+      - rule: "Не добавляй моки."
+      - rule: "Не реализуй тесты."
+      - rule: "Протестируй основные сценарии, как успешные, так и неуспешные."
+      - rule: "Каждый сценарий тестирования должен быть представлен в виде тестового метода."
+      - rule: "Тестовый метод должен быть параметризованным, если есть похожие сценарии с разными входными данными."
+      - rule: "Тестовый метод должен быть помечен аннотацией @Test."
+      - rule: "Тестовый метод должен содержать #expect(false)"
+      - rule: "Тестовый метод имеет комментарий, описывающий сценарий тестирования."
+      - rule: "Комментарий содержит секции в строгом порядке: Test, Mock, Setup, Verify."
+      - rule: "Каждая секция содержит список действий, которые нужно выполнить для тестирования."
+      - rule: "Методы init и deinit должны иметь комментарии, описывающие что в них будет (например, настройка моков в init, очистка в deinit)."
+      - rule: "Не добавляй @MainActor в новый тестовый класс. В существующем классе оставь @MainActor если он есть, не добавляй если его нет."
+    expected_result: |
+      Файл содержит набор тестовых методов, покрывающих все основные сценарии использования указанного модуля или компонента. 
+      Тесты компилируются и при этом не успешны.
+    examples:
+      - input: |
+          Составление плана тестирования для UILoginViewModel
+        output: |
+          import Testing
+
+          @Suite("UILoginViewModelTests")
+
+          final class UILoginViewModelTests {
+              
+              // Setup:
+              // - Initialize mocks (networkProvider, accountStorage, appNavigator)
+              // - Register mocks in Container.shared
+              init() {
+              }
+
+              // Cleanup:
+              // - Clear Container.shared registrations if needed
+              deinit {}
+              
+              // Test: Successful login with valid credentials
+              // Mock:
+              // - networkProvider to return AuthResponse with token
+              // - accountStorage to track save calls
+              // - appNavigator to track navigation calls
+              // - uiDashboardViewController
+              // Setup:
+              // - Create ViewModel
+              // - Configure network mock with success response
+              // - Setup valid email and password
+              // Verify:
+              // - isLoading becomes false
+              // - errorMessage is nil
+              // - Account saved to AccountStorage
+              // - navigation called
+              @Test("Login with valid credentials")
+              func testLoginSuccess() async throws {
+                  #expect(false)
+              }
+              
+              // Test: API error handling with invalid credentials
+              // Mock:
+              // - networkProvider to throw APIErrorResponse
+              // Setup:
+              // - Create ViewModel
+              // - Configure network mock to throw error
+              // - Setup invalid email and password
+              // Verify:
+              // - errorMessage is set correctly
+              // - isLoading becomes false after error
+              @Test("Handle API error with invalid credentials")
+              func testLoginAPIError() async throws {
+                  #expect(false)
+              }
+              
+              // Test: State changes sequence during login
+              // Mock:
+              // - networkProvider to return AuthResponse with token
+              // Setup:
+              // - Create ViewModel
+              // - Setup Observations stream for state tracking
+              // - Configure network mock with success response
+              // Verify:
+              // - isLoading changes from false to true to false
+              // - Using expectEvents
+              @Test("Login state changes sequence")
+              func testLoginStateSequence() async throws {
+                  #expect(false)
+              }
+              
+              // Test: Email and password validation
+              // Mock:
+              // - None
+              // Setup:
+              // - Create ViewModel
+              // - Call validate method with different input combinations
+              // Verify:
+              // - Validation result matches expectedValid for each input combination
+              @Test("Validate email and password", arguments: [
+                  ("valid@example.com", "password123", true),
+                  ("invalid-email", "password123", false),
+                  ("valid@example.com", "", false),
+                  ("", "password123", false)
+              ])
+              func testValidation(email: String, password: String, expectedValid: Bool) {
+                  #expect(false)
+              }
+              
+              // Test: Token saving after successful login
+              // Mock:
+              // - networkProvider to return AuthResponse with token
+              // - accountStorage to track save calls
+              // Setup:
+              // - Create ViewModel
+              // - Configure network mock
+              // - Perform login with valid credentials
+              // Verify:
+              // - Token is saved to AccountStorage with correct key and value
+              @Test("Save token after successful login")
+              func testSaveTokenAfterLogin() async throws {
+                  #expect(false)
+              }
+              
+              // Test: Navigation after successful login
+              // Mock:
+              // - networkProvider to return AuthResponse with token
+              // - appNavigator to track navigation calls
+              // Setup:
+              // - Create ViewModel
+              // - Configure mocks
+              // - Perform login with valid credentials
+              // Verify:
+              // - replaceAppFlow is called with correct parameters
+              @Test("Navigate after successful login")
+              func testNavigationAfterLogin() async throws {
+                  #expect(false)
+              }
+              
+              // Test: Network error handling
+              // Mock:
+              // - networkProvider to throw URLError or network error
+              // Setup:
+              // - Create ViewModel
+              // - Configure network mock to throw network error
+              // - Setup valid email and password
+              // Verify:
+              // - Network error is handled correctly
+              // - Error message is displayed
+              // - isLoading becomes false
+              @Test("Handle network error")
+              func testNetworkError() async throws {
+                  #expect(false)
+              }
+              
+              // Test: Error clearing on input change
+              // Mock:
+              // - None
+              // Setup:
+              // - Create ViewModel
+              // - Set errorMessage
+              // - Change email or password
+              // Verify:
+              // - errorMessage is cleared when email or password changes
+              @Test("Clear error on input change")
+              func testClearErrorOnInputChange() {
+                  #expect(false)
+              }
+        explanation: |
+          Пример показывает план тестирования для UILoginViewModel. План содержит:
+          - Базовую структуру тестового класса.
+          - Комментарии к init и deinit методам, описывающие что в них будет
+          - Набор пустых тестовых методов с комментариями, описывающими что будет тестироваться
+          - Комментарии содержат секции в строгом порядке: Test, Mock, Setup, Verify
+          - Различные сценарии: успешные операции, обработка ошибок, валидация, навигация
+          - Параметризованный тест для проверки валидации (похожие сценарии с разными входными данными)
+          - Все тесты компилируются, но не успешны
+    steps:
+      - action: "Create test file"
+        instruction: |
+          Создай файл и класс для тестов.
+        conditions:
+          - "Файл с тестами не существует"
+        rules:
+          - rule: "Создай файл и класс для тестов."
+          - rule: "Добавь импорт Testing."
+          - rule: "Добавь @Suite для группировки тестов."
+          - rule: "Добавь init и deinit методы."
+          - rule: "Добавь комментарии к init и deinit, описывающие что в них будет (например, настройка моков в init, очистка в deinit)."
+          - rule: "Не добавляй @MainActor в новый тестовый класс."
+          - rule: "Не добавляй реализацию методов."
+      - action: "Plan tests"
+        instruction: |
+          Составь план тестирования.
+        prerequisites:
+          - "Тестовый класс существует"
+        rules:
+          - rule: "Изучи код который нужно протестировать."
+          - rule: "Продумай основные сценарии использования, успешные и неуспешные."
+          - rule: "Продумай необходимые моки"
+          - rule: "Продумай необходимые пререквизиты для тестирования"
+      - action: "Check existing tests"
+        instruction: |
+          Сравни план тестирования с существующими тестами.
+          Прочитай существующий тестовый файл и проанализируй его содержимое.
+          Сравни каждый тестовый метод из плана с методами в существующем файле по имени метода.
+          Определи, какие тесты нужно добавить, какие изменить, какие удалить.
+        conditions:
+          - "Код уже покрыт тестами"
+        prerequisites:
+          - "План тестирования составлен"
+        rules:
+          - rule: "Прочитай существующий тестовый файл полностью."
+          - rule: "Сравни тестовые методы по имени метода (например, testLoginSuccess)."
+          - rule: "Тесты, которых нет в плане, пометь комментарием перед методом: // TODO: Remove - not in test plan"
+          - rule: "Тесты, которые есть в плане, но отсутствуют в коде, нужно добавить."
+          - rule: "Тесты, которые есть и в плане, и в коде, нужно обновить (добавить комментарий, реализацию не изменяй)."
+      - action: "Create new tests"
+        instruction: |
+          Добавь тесты в план тестирования.
+        conditions:
+          - "Код еще не покрыт тестами"
+        prerequisites:
+          - "План тестирования составлен"
+      - action: "Update existing tests"
+        instruction: |
+          Создай недостающие методы, которые есть в плане, но нет в тестах.
+          Для методов, которые уже есть в тестах, добавь комментарий описывающий сценарий тестирования.
+          Сам метод не изменяй, только добавь комментарий перед методом.
+        conditions:
+          - "Код уже покрыт тестами"
+          - "Имеются тесты, которые не соответствуют плану"
+        prerequisites:
+          - "План тестирования составлен"
+          - "Проверка существующих тестов выполнена"
+        rules:
+          - rule: "Для методов, которые есть в плане, но отсутствуют в тестах - создай новый метод с #expect(false) и комментарием."
+          - rule: "Для методов, которые уже есть в тестах - добавь только комментарий перед методом, сам метод не изменяй."
+          - rule: "Комментарий должен содержать секции в строгом порядке: Test, Mock, Setup, Verify."
+          - rule: "Не удаляй реализацию существующих методов, только добавляй комментарий."

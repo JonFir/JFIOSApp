@@ -45,6 +45,13 @@
             "type": "string"
           }
         },
+        "conditions": {
+          "type": "array",
+          "description": "Conditions when the task should be executed (conditional logic)",
+          "items": {
+            "type": "string"
+          }
+        },
         "expected_result": {
           "type": "string",
           "description": "Description of expected task execution result (multiline text)"
@@ -133,6 +140,13 @@
         "prerequisites": {
           "type": "array",
           "description": "Prerequisites for step execution",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "description": "Conditions when the step should be executed (conditional logic)",
           "items": {
             "type": "string"
           }
