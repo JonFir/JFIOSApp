@@ -188,11 +188,17 @@ let project = Project(
         Modules.navigator.apiTarget,
         Modules.logger.apiTarget,
         Modules.libSwiftUI.apiTarget,
+        Modules.libNetwork.apiTarget,
+        Dependencies.alamofire.target,
+        Modules.uiRegistration.apiTarget,
+        Modules.uiDashbord.apiTarget,
+        Modules.accountStorage.apiTarget,
     ])
     + module(moduleInfo: Modules.uiRegistration, implDependencies: [
         Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
     ])
+    + module(moduleInfo: Modules.uiDashbord)
     + module(moduleInfo: Modules.uiComponents, onlyApi: true, apiDependencies: [
         Modules.resources.apiTarget,
         Modules.libSwiftUI.apiTarget,
@@ -219,6 +225,7 @@ enum Modules: String, ModuleInfo {
     case accountStorage = "AccountStorage"
     case uiLogin = "UILogin"
     case uiRegistration = "UIRegistration"
+    case uiDashbord = "UIDashbord"
     case uiComponents = "UIComponents"
     case libSwiftUI = "LibSwiftUI"
 
@@ -233,6 +240,7 @@ enum Modules: String, ModuleInfo {
             .accountStorage,
             .uiLogin,
             .uiRegistration,
+            .uiDashbord,
         ]
     }
 }

@@ -23,7 +23,7 @@ public actor SettingsProviderImpl: SettingsProvider {
             appName: appName,
             bundleID: bundleID,
             persistenceDirectory: persistenceDirectory,
-            apiHost: URL(string: "http://127.0.0.1:8090")!
+            apiHost: URL(string: "http://127.0.0.1:8090/")!
         )
         settings = initialSettings
     }

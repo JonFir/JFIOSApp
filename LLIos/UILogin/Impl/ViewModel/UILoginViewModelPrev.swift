@@ -3,14 +3,14 @@ import LibSwiftUI
 
 @Observable
 final class UILoginViewModelPrev: UILoginViewModel {
-    var email = VMField<String>("preview@example.com") { .value($0) }
-    var password = VMField<String>("preview@example.com") { .value($0) }
+    var email = "preview@example.com"
+    var password = "preview@example.com"
     var isLoading: Bool = false
-    var errorMessage: (String, String?)?
+    var errorMessage: UILoginViewModelError?
 
     func login() {
         if errorMessage == nil {
-            errorMessage = (
+            errorMessage = UILoginViewModelError(
                 "Пользователь не найден",
                 "Пользователь с таким `email` не зарегистрирован или указан неверный пароль"
             )

@@ -9,8 +9,9 @@ import SettingsImpl
 import NavigatorImpl
 import UISplashImpl
 import AccountStorageImpl
-import LibNetwork
+import LibNetworkImpl
 import UILoginImpl
+import UIDashbordImpl
 
 private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [
     LoggerAutoRegister(),
@@ -21,6 +22,8 @@ private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [
     AccountStorageAutoRegister(),
     LoggerAutoRegister(),
     UILoginAutoRegister(),
+    LibNetworkAutoRegister(),
+    UIDashboardAutoRegister(),
 ]
 
 extension Container: @retroactive AutoRegistering {

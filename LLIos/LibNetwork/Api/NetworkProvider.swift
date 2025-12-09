@@ -1,45 +1,109 @@
 import Alamofire
 import LibSwift
 import FactoryKit
+import Foundation
+
+public typealias HTTPMethod = Alamofire.HTTPMethod
+public typealias HTTPHeaders = Alamofire.HTTPHeaders
+public typealias Parameters = Alamofire.Parameters
 
 extension Container {
-    public var networkSession: Factory<Session?> { promised().singleton }
+    public var networkProvider: Factory<NetworkProvider?> { promised().singleton }
 }
 
-public protocol NetworkProvider: Sendable {
+public protocol NetworkProvider: Actor {
     func subscribe(
         _ callback: @Sendable @escaping (NetworkReachabilityManager.NetworkReachabilityStatus) async -> Void
     ) async -> AnySendableObject
 
-    func request(
-        _ convertible: any URLConvertible,
+    func codable<T>(
+        path: String,
         method: HTTPMethod,
         parameters: Parameters?,
-        encoding: any ParameterEncoding,
-        headers: HTTPHeaders?,
-        interceptor: (any RequestInterceptor)?,
-        requestModifier: Session.RequestModifier?
-    ) -> DataRequest
+        headers: HTTPHeaders,
+    ) async throws -> T where T: Sendable, T: Decodable
+
+    func empty(
+        path: String,
+        method: HTTPMethod,
+        parameters: Parameters?,
+        headers: HTTPHeaders,
+    ) async throws
+
+    func string(
+        path: String,
+        method: HTTPMethod,
+        parameters: Parameters?,
+        headers: HTTPHeaders,
+    ) async throws -> String
+
+    func data(
+        path: String,
+        method: HTTPMethod,
+        parameters: Parameters?,
+        headers: HTTPHeaders,
+    ) async throws -> Data
+
 }
 
 public extension NetworkProvider {
-    func request(
-        _ convertible: any URLConvertible,
+    @_disfavoredOverload
+    func codable<T>(
+        path: String,
         method: HTTPMethod = .get,
         parameters: Parameters? = nil,
-        encoding: any ParameterEncoding = URLEncoding.default,
-        headers: HTTPHeaders? = nil,
-        interceptor: (any RequestInterceptor)? = nil,
-        requestModifier: Session.RequestModifier? = nil
-    ) -> DataRequest {
-        request(
-            convertible,
+        headers: HTTPHeaders = [],
+    ) async throws -> T where T: Sendable, T: Decodable {
+        try await codable(
+            path: path,
             method: method,
             parameters: parameters,
-            encoding: encoding,
-            headers: headers,
-            interceptor: interceptor,
-            requestModifier: requestModifier
+            headers: headers
+        )
+    }
+
+    @_disfavoredOverload
+    func empty(
+        path: String,
+        method: HTTPMethod = .get,
+        parameters: Parameters? = nil,
+        headers: HTTPHeaders = [],
+    ) async throws {
+        try await empty(
+            path: path,
+            method: method,
+            parameters: parameters,
+            headers: headers
+        )
+    }
+
+    @_disfavoredOverload
+    func string(
+        path: String,
+        method: HTTPMethod = .get,
+        parameters: Parameters? = nil,
+        headers: HTTPHeaders = [],
+    ) async throws -> String {
+        try await string(
+            path: path,
+            method: method,
+            parameters: parameters,
+            headers: headers
+        )
+    }
+
+    @_disfavoredOverload
+    func data(
+        path: String,
+        method: HTTPMethod = .get,
+        parameters: Parameters? = nil,
+        headers: HTTPHeaders = [],
+    ) async throws -> Data {
+        try await data(
+            path: path,
+            method: method,
+            parameters: parameters,
+            headers: headers
         )
     }
 }

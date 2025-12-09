@@ -16,4 +16,9 @@ final class UILoginViewControllerImpl: BaseViewController, UILoginViewController
         }
         navigator?.replace([vc], animated: false)
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        logger?.info("Login.Screen.Shown", category: .ui, module: "UILogin")
+    }
 }

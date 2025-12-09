@@ -3,13 +3,13 @@ import LibNetwork
 import UIKit
 import Alamofire
 
-public class LoggerAutoRegister: AutoRegistering {
+public class LibNetworkAutoRegister: AutoRegistering {
 
     public init() {}
 
     public func autoRegister() {
-        Container.shared.networkSession.register {
-            Session()
+        Container.shared.networkProvider.register {
+            NetworkProviderImpl()
         }
     }
 }

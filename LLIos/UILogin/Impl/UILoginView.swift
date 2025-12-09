@@ -2,6 +2,7 @@ import SwiftUI
 import FactoryKit
 import UIComponents
 import Resources
+import Logger
 
 private enum UILoginViewFocusedField: Int, Hashable {
    case email
@@ -9,8 +10,10 @@ private enum UILoginViewFocusedField: Int, Hashable {
 }
 
 struct UILoginView: View {
-    @State var vm = resolve(\.uiLoginViewModel)
-    @FocusState private var focusedField: UILoginViewFocusedField?
+    @State
+    private var vm = resolve(\.uiLoginViewModel)
+    @FocusState
+    private var focusedField: UILoginViewFocusedField?
 
     var body: some View {
         ScrollView {
@@ -31,7 +34,7 @@ struct UILoginView: View {
                     )
 
                     if let errorMessage = vm.errorMessage {
-                        InlineErrorView(message: errorMessage.0, description: errorMessage.1)
+                        InlineErrorView(message: errorMessage.title, description: errorMessage.subtitle)
                             .padding(.top, 4)
                             .transition(.slide)
                     }
@@ -42,6 +45,7 @@ struct UILoginView: View {
                     RegisterButton(vm: vm)
                         .padding(.top, 8)
                 }
+                .animation(.easeInOut, value: vm.errorMessage)
                 .padding(.horizontal, 32)
 
                 Spacer().frame(height: 60)
@@ -81,14 +85,15 @@ private struct HeaderView: View {
 }
 
 private struct LoginButton: View {
+    @Injected(\.logger)
+    var logger: Logger!
     let vm: UILoginViewModel
 
     var body: some View {
         Button(
             action: {
-                withAnimation(.easeInOut) {
-                    vm.login()
-                }
+                logger.info("Login.Button.Login.Pressed", category: .ui, module: "UILogin")
+                Task.immediate { await vm.login() }
             },
             label: {
                 HStack {
@@ -109,14 +114,15 @@ private struct LoginButton: View {
 }
 
 private struct RegisterButton: View {
+    @Injected(\.logger)
+    var logger: Logger!
     let vm: UILoginViewModel
 
     var body: some View {
         Button(
             action: {
-                withAnimation(.easeInOut) {
-                    vm.navigateToRegistration()
-                }
+                logger.info("Login.Button.Register.Pressed", category: .ui, module: "UILogin")
+                vm.navigateToRegistration()
             },
             label: {
                 HStack(spacing: 4) {
@@ -140,7 +146,7 @@ private struct EmailField: View {
     var body: some View {
         DefaultTextField(
             title: String(localized: "textFiled.email.title", bundle: .module),
-            text: .init(get: { vm.email.text }, set: { vm.email.text = $0 })
+            text: .init(get: { vm.email }, set: { vm.email = $0 })
         )
         .focused($focusedField, equals: .email)
         .submitLabel(.next)
@@ -151,6 +157,8 @@ private struct EmailField: View {
 }
 
 private struct PasswordField: View {
+    @Injected(\.logger)
+    var logger: Logger!
     let vm: UILoginViewModel
     @FocusState.Binding var focusedField: UILoginViewFocusedField?
 
@@ -158,12 +166,13 @@ private struct PasswordField: View {
         DefaultTextField(
             title: String(localized: "textFiled.password.title", bundle: .module),
             isSecure: true,
-            text: .init(get: { vm.password.text }, set: { vm.password.text = $0 })
+            text: .init(get: { vm.password }, set: { vm.password = $0 })
         )
         .focused($focusedField, equals: .password)
         .submitLabel(.done)
         .onSubmit {
-            vm.login()
+            logger.info("Login.Keyboard.Done.Pressed", category: .ui, module: "UILogin")
+            Task.immediate { await vm.login() }
         }
     }
 }
