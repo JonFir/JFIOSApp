@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/llm_task.schema.json",
+  "title": "LLM Task Schema",
+  "description": "Schema for LLM task instructions YAML files",
+  "type": "object",
+  "required": ["task"],
+  "properties": {
+    "task": {
+      "type": "array",
+      "description": "Array of tasks",
+      "items": {
+        "$ref": "#/definitions/task"
+      }
+    }
+  },
+  "definitions": {
+    "task": {
+      "type": "object",
+      "required": ["id", "action", "instruction"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique task identifier"
+        },
+        "action": {
+          "type": "string",
+          "description": "Brief action name"
+        },
+        "instruction": {
+          "type": "string",
+          "description": "Detailed instruction for task execution (multiline text)"
+        },
+        "rules": {
+          "type": "array",
+          "description": "Rules to follow when executing the task",
+          "items": {
+            "$ref": "#/definitions/rule"
+          }
+        },
+        "prerequisites": {
+          "type": "array",
+          "description": "Prerequisites for task execution",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected_result": {
+          "type": "string",
+          "description": "Description of expected task execution result (multiline text)"
+        },
+        "examples": {
+          "type": "array",
+          "description": "Examples for few-shot learning",
+          "items": {
+            "$ref": "#/definitions/example"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "description": "Steps for task execution (can be multi-level with nested substeps)",
+          "items": {
+            "$ref": "#/definitions/step"
+          }
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": ["rule"],
+      "properties": {
+        "rule": {
+          "type": "string",
+          "description": "Rule text (string or multiline text)"
+        },
+        "examples": {
+          "type": "array",
+          "description": "Examples for this rule",
+          "items": {
+            "$ref": "#/definitions/example"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "description": "Child rules (recursive structure)",
+          "items": {
+            "$ref": "#/definitions/rule"
+          }
+        }
+      }
+    },
+    "example": {
+      "type": "object",
+      "required": ["input", "output"],
+      "properties": {
+        "input": {
+          "type": "string",
+          "description": "Input data or situation description (string or multiline text)"
+        },
+        "output": {
+          "type": "string",
+          "description": "Expected result or execution process description (string or multiline text)"
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Example explanation (string or multiline text, optional)"
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "required": ["action", "instruction"],
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "Step name"
+        },
+        "instruction": {
+          "type": "string",
+          "description": "Detailed instruction for step execution (multiline text)"
+        },
+        "rules": {
+          "type": "array",
+          "description": "Rules to follow when executing this step",
+          "items": {
+            "$ref": "#/definitions/rule"
+          }
+        },
+        "validation": {
+          "type": "string",
+          "description": "Description of how to verify step success (string or multiline text)"
+        },
+        "prerequisites": {
+          "type": "array",
+          "description": "Prerequisites for step execution",
+          "items": {
+            "type": "string"
+          }
+        },
+        "examples": {
+          "type": "array",
+          "description": "Examples for few-shot learning",
+          "items": {
+            "$ref": "#/definitions/example"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "description": "Nested substeps (recursive structure, allows multi-level hierarchy)",
+          "items": {
+            "$ref": "#/definitions/step"
+          }
+        }
+      }
+    }
+  }
+}
+
