@@ -1,0 +1,124 @@
+task:
+  - id: "create_vm_view_scaffold"
+    action: "Создание скаффолда view с view model"
+    instruction: |
+      Создай скаффолд для SwiftUI view с view model паттерном. Все файлы должны быть созданы в одной папке.
+      Структура включает: протокол ViewModel, реализацию ViewModel, preview версию ViewModel и SwiftUI View.
+    expected_result: |
+      Созданы 4 файла в одной папке <ViewName>:
+      1. <ViewName>ViewModel.swift - протокол view model
+      2. <ViewName>ViewModelImpl.swift - реализация view model с Factory
+      3. <ViewName>ViewModelPrev.swift - preview версия для SwiftUI Preview
+      4. <ViewName>View.swift - SwiftUI view с использованием view model
+      
+      Все файлы компилируются, view отображается в preview, зависимости инжектятся через FactoryKit.
+    steps:
+      - action: "Создание протокола ViewModel"
+        instruction: |
+          Создай файл <ViewName>ViewModel.swift в указанной папке.
+          
+          Протокол должен:
+          - Иметь имя <ViewName>ViewModel (например, UILoginViewModel)
+          - Быть помечен @MainActor
+          - Наследоваться от Observable и AnyObject
+          - Быть пустым протоколом
+          ```
+        examples:
+          - input: "ViewName = UILogin"
+            output: |
+              <ViewName>ViewModel.swift
+              ```swift
+              import SwiftUI
+              
+              /// View model protocol for <view description>
+              @MainActor
+              protocol <ViewName>ViewModel: Observable, AnyObject {
+              }
+              ```
+      - action: "Создание реализации ViewModel"
+        instruction: |
+          Создай файл <ViewName>ViewModelImpl.swift в той же папке.
+          
+          Реализация должна:
+          - Иметь имя <ViewName>ViewModelImpl
+          - Быть помечена @Observable и final class
+          - Реализовывать протокол <ViewName>ViewModel
+          - Содержать extension Container с Factory для view model
+          ```
+        examples:
+          - input: "ViewName = UILogin"
+            output: |
+              UILoginViewModelImpl.swift
+              ```swift
+              import SwiftUI
+              import FactoryKit
+
+              extension Container {
+                  @MainActor
+                  var <viewName>ViewModel: Factory<<ViewName>ViewModel> {
+                      self { @MainActor in <ViewName>ViewModelImpl() }
+                  }
+              }
+              
+              @Observable
+              final class <ViewName>ViewModelImpl: <ViewName>ViewModel {
+              }
+              ```
+      - action: "Создание Preview версии ViewModel"
+        instruction: |
+          Создай файл <ViewName>ViewModelPrev.swift в той же папке.
+          
+          Preview версия должна:
+          - Иметь имя <ViewName>ViewModelPrev
+          - Быть помечена @Observable и final class
+          - Реализовывать протокол <ViewName>ViewModel
+          ```
+        examples:
+          - input: "ViewName = UILogin"
+            output: |
+              <ViewName>ViewModelPrev.swift
+              ```swift
+              import SwiftUI
+              import LibSwiftUI
+              
+              @Observable
+              final class <ViewName>ViewModelPrev: <ViewName>ViewModel {
+              }
+              ```
+      - action: "Создание SwiftUI View"
+        instruction: |
+          Создай файл <ViewName>View.swift в той же папке.
+          
+          View должна:
+          - Иметь имя <ViewName>View
+          - Быть структурой, реализующей View
+          - Использовать @State для view model через resolve(\.<viewName>ViewModel)
+          - Содержать body с Text("Hello, World!")
+          - Содержать #Preview с использованием Container.shared.preview и <ViewName>ViewModelPrev
+        examples:
+          - input: "ViewName = UILogin"
+            output: |
+              <ViewName>View.swift
+              ```swift
+              import SwiftUI
+              import FactoryKit
+              import UIComponents
+              import Resources
+              import Logger
+              
+              struct <ViewName>View: View {
+                  @State
+                  private var vm = resolve(\.<viewName>ViewModel)
+                  
+                  var body: some View {
+                      Text("Hello, World!")
+                  }
+              }
+              
+              #Preview {
+                  Container.shared.preview {
+                      $0.<viewName>ViewModel.register { @MainActor in <ViewName>ViewModelPrev() }
+                  }
+                  <ViewName>View()
+              }
+              ```
