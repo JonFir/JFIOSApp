@@ -15,7 +15,9 @@ import UIDashbord
 import FactoryTesting
 
 @MainActor
+@Suite(.timeLimit(.minutes(1)))
 class UILoginViewModelTests {
+    nonisolated static let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJfcGJfdXNlcnNfYXV0aF8iLCJleHAiOjE3NjYzODM5MjcsImlkIjoiY3NodTB4cDh3bmIzOHJsIiwicmVmcmVzaGFibGUiOnRydWUsInR5cGUiOiJhdXRoIn0.gQrIDQtGiqYgTfiSU8VTqeoGQRrhyErr8qub5sATspA"
     var vm: UILoginViewModel!
     var dashboard: UIDashboardViewControllerMock!
     var networkProviderMock: NetworkProviderMock!
@@ -62,7 +64,7 @@ class UILoginViewModelTests {
         ("charlie@sub.domain.info", "Test1234#"),
         ("diana@example-domain.ru", "РусскийП@сс1"),
         ("eve@test.co", "Complex!123"),
-        ("frank@example.museum", "P@ssw0rd!")
+        ("frank@example.museum", "P@ssw0rd!"),
     ])
     func successLogin(email: String, password: String) async throws {
         await networkProviderMock.update { path, method, parameters, headers in
@@ -76,8 +78,8 @@ class UILoginViewModelTests {
             }
 
             return AuthResponse(
-                token: "774d67736g8",
-                record: Record(
+                token: Self.token,
+                record: UserDTO(
                     collectionId: "qwe",
                     collectionName: "123",
                     id: "id_123",
@@ -95,14 +97,22 @@ class UILoginViewModelTests {
         vm.password = password
 
         let stream = Observations { [vm] in (vm.isLoading, vm.errorMessage) }
-        async let collector = expectEvents(from: stream, max: 2, timeout: 1)
+        async let collector = expectEvents(from: stream, max: 2)
         await vm.login()
         let events = await collector
         let accountStorageResult = await accountStorage.saveCalls
 
         #expect(events.map(\.0) == [true, false], "start and stop loading")
         #expect(events.map(\.1) == [nil, nil], "error always nil")
-        #expect(accountStorageResult == [Account(id: "id_123", email: "email_123", name: "name_123", token: "774d67736g8")])
+        #expect(accountStorageResult == [
+            Account(
+                id: "id_123",
+                email: "email_123",
+                name: "name_123",
+                token: Self.token,
+                expiration: try decodeJWTPayload(Self.token).exp!
+            ),
+        ])
         #expect(dashboard.replaceAppFlowCallCount == 1)
     }
 
@@ -164,7 +174,7 @@ class UILoginViewModelTests {
         vm.password = "Password123!"
 
         let stream = Observations { [vm] in (vm.isLoading, vm.errorMessage) }
-        async let collector = expectEvents(from: stream, max: 2, timeout: 1)
+        async let collector = expectEvents(from: stream, max: 2)
         await vm.login()
         let events = await collector
 
@@ -190,7 +200,7 @@ class UILoginViewModelTests {
         vm.password = "Password123!"
 
         let stream = Observations { [vm] in (vm.isLoading, vm.errorMessage) }
-        async let collector = expectEvents(from: stream, max: 2, timeout: 1)
+        async let collector = expectEvents(from: stream, max: 2)
         await vm.login()
         let events = await collector
 
@@ -205,13 +215,13 @@ class UILoginViewModelTests {
 
     @Test(.container, arguments: [
         (nil, "id_123"),
-        ("token_123", nil)
+        (Self.token, nil)
     ] as [(String?, String?)])
     func loginWithInvalidResponse(token: String?, recordId: String?) async throws {
         await networkProviderMock.update { path, method, parameters, headers in
             return AuthResponse(
                 token: token,
-                record: Record(
+                record: UserDTO(
                     collectionId: "qwe",
                     collectionName: "123",
                     id: recordId,
@@ -230,7 +240,7 @@ class UILoginViewModelTests {
         vm.password = "Password123!"
 
         let stream = Observations { [vm] in (vm.isLoading, vm.errorMessage) }
-        async let collector = expectEvents(from: stream, max: 2, timeout: 1)
+        async let collector = expectEvents(from: stream, max: 2)
         await vm.login()
         let events = await collector
 
@@ -247,8 +257,8 @@ class UILoginViewModelTests {
     func loginClearsPreviousError() async throws {
         await networkProviderMock.update { path, method, parameters, headers in
             return AuthResponse(
-                token: "774d67736g8",
-                record: Record(
+                token: Self.token,
+                record: UserDTO(
                     collectionId: "qwe",
                     collectionName: "123",
                     id: "id_123",
@@ -274,7 +284,7 @@ class UILoginViewModelTests {
         vm.password = "Password123!"
 
         let stream = Observations { [vm] in (vm.isLoading, vm.errorMessage) }
-        async let collector = expectEvents(from: stream, max: 2, timeout: 1)
+        async let collector = expectEvents(from: stream, max: 2)
         await vm.login()
         let events = await collector
 

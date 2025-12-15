@@ -81,21 +81,14 @@ final class UILoginViewModelImpl: UILoginViewModel {
             let response: AuthResponse = try await networkProvider.codable(
                 path: "/api/collections/users/auth-with-password",
                 method: .post,
-                parameters: ["identity": email, "password": password]
+                parameters: ["identity": email, "password": password],
+                anonimous: true
             )
 
-            guard
-                let id = response.record?.id,
-                let token = response.token
-            else {
+            guard let account = try response.convertToAccount() else {
                 throw UILoginViewModelError.unknown
             }
-            let account = Account(
-                id: id,
-                email: response.record?.email,
-                name: response.record?.name,
-                token: token
-            )
+            
             await accountStorage.save(account: account)
             Container.shared.uiDashboardViewController()?.replaceAppFlow()
         } catch let error as UILoginViewModelError {
@@ -115,22 +108,4 @@ final class UILoginViewModelImpl: UILoginViewModel {
         Container.shared.uiRegistrationViewController()?.show()
     }
 
-}
-
-struct AuthResponse: Decodable {
-    let token: String?
-    let record: Record?
-}
-
-struct Record: Decodable {
-    let collectionId: String?
-    let collectionName: String?
-    let id: String?
-    let email: String?
-    let emailVisibility: Bool?
-    let verified: Bool?
-    let name: String?
-    let avatar: String?
-    let created: String?
-    let updated: String?
 }

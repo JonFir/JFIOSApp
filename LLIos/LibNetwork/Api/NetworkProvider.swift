@@ -21,6 +21,7 @@ public protocol NetworkProvider: Actor {
         method: HTTPMethod,
         parameters: Parameters?,
         headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws -> T where T: Sendable, T: Decodable
 
     func empty(
@@ -28,6 +29,7 @@ public protocol NetworkProvider: Actor {
         method: HTTPMethod,
         parameters: Parameters?,
         headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws
 
     func string(
@@ -35,6 +37,7 @@ public protocol NetworkProvider: Actor {
         method: HTTPMethod,
         parameters: Parameters?,
         headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws -> String
 
     func data(
@@ -42,6 +45,7 @@ public protocol NetworkProvider: Actor {
         method: HTTPMethod,
         parameters: Parameters?,
         headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws -> Data
 
 }
@@ -53,12 +57,14 @@ public extension NetworkProvider {
         method: HTTPMethod = .get,
         parameters: Parameters? = nil,
         headers: HTTPHeaders = [],
+        anonimous: Bool = false,
     ) async throws -> T where T: Sendable, T: Decodable {
         try await codable(
             path: path,
             method: method,
             parameters: parameters,
-            headers: headers
+            headers: headers,
+            anonimous: anonimous,
         )
     }
 
@@ -68,12 +74,14 @@ public extension NetworkProvider {
         method: HTTPMethod = .get,
         parameters: Parameters? = nil,
         headers: HTTPHeaders = [],
+        anonimous: Bool = false,
     ) async throws {
         try await empty(
             path: path,
             method: method,
             parameters: parameters,
-            headers: headers
+            headers: headers,
+            anonimous: anonimous,
         )
     }
 
@@ -83,12 +91,14 @@ public extension NetworkProvider {
         method: HTTPMethod = .get,
         parameters: Parameters? = nil,
         headers: HTTPHeaders = [],
+        anonimous: Bool = false,
     ) async throws -> String {
         try await string(
             path: path,
             method: method,
             parameters: parameters,
-            headers: headers
+            headers: headers,
+            anonimous: anonimous,
         )
     }
 
@@ -98,12 +108,14 @@ public extension NetworkProvider {
         method: HTTPMethod = .get,
         parameters: Parameters? = nil,
         headers: HTTPHeaders = [],
+        anonimous: Bool = false,
     ) async throws -> Data {
         try await data(
             path: path,
             method: method,
             parameters: parameters,
-            headers: headers
+            headers: headers,
+            anonimous: anonimous,
         )
     }
 }

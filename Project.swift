@@ -142,6 +142,7 @@ let project = Project(
         moduleInfo: Modules.libNetwork,
         apiDependencies: [
             Modules.libSwift.apiTarget,
+            Dependencies.alamofire.target,
         ],
         implDependencies: [
             Modules.libSwift.apiTarget,
@@ -198,7 +199,19 @@ let project = Project(
         Modules.libSwift.apiTarget,
         Modules.libUIKit.apiTarget,
     ])
-    + module(moduleInfo: Modules.uiDashbord)
+    + module(
+        moduleInfo: Modules.uiDashbord,
+        implDependencies: [
+            Modules.libSwift.apiTarget,
+            Modules.libUIKit.apiTarget,
+            Modules.uiComponents.apiTarget,
+            Modules.resources.apiTarget,
+            Modules.navigator.apiTarget,
+            Modules.logger.apiTarget,
+            Modules.libSwiftUI.apiTarget,
+            Modules.libNetwork.apiTarget,
+        ]
+    )
     + module(moduleInfo: Modules.uiComponents, onlyApi: true, apiDependencies: [
         Modules.resources.apiTarget,
         Modules.libSwiftUI.apiTarget,

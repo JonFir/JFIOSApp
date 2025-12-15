@@ -1,6 +1,7 @@
 import Foundation
 import LibSwift
 
+#if DEBUG
 public actor SettingsProviderMock: SettingsProvider {
     
     public nonisolated let initialSettings: Settings
@@ -18,7 +19,7 @@ public actor SettingsProviderMock: SettingsProvider {
             bundleID: "com.mock.app",
             persistenceDirectory: URL(fileURLWithPath: "/tmp/mock-persistence"),
             deviceID: nil,
-            apiHost: URL(string: "https://mock.api.com")!
+            apiHost: URL(string: "http://127.0.0.1:8090/")!
         )
         self.initialSettings = defaultSettings
         self.settings = defaultSettings
@@ -50,3 +51,4 @@ public actor SettingsProviderMock: SettingsProvider {
         updateCallCount = 0
     }
 }
+#endif

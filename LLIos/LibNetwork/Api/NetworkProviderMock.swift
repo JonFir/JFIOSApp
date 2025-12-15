@@ -33,7 +33,8 @@ public actor NetworkProviderMock: NetworkProvider {
         path: String,
         method: HTTPMethod,
         parameters: Parameters?,
-        headers: HTTPHeaders
+        headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws -> T where T: Sendable, T: Decodable {
         requestCallResults.append((path, method, parameters, headers))
         return try await onRequest(path, method, parameters, headers) as! T
@@ -43,7 +44,8 @@ public actor NetworkProviderMock: NetworkProvider {
         path: String,
         method: HTTPMethod,
         parameters: Parameters?,
-        headers: HTTPHeaders
+        headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws {
         requestCallResults.append((path, method, parameters, headers))
         _ = try await onRequest(path, method, parameters, headers)
@@ -53,7 +55,8 @@ public actor NetworkProviderMock: NetworkProvider {
         path: String,
         method: HTTPMethod,
         parameters: Parameters?,
-        headers: HTTPHeaders
+        headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws -> String {
         requestCallResults.append((path, method, parameters, headers))
         return try await onRequest(path, method, parameters, headers) as! String
@@ -63,7 +66,8 @@ public actor NetworkProviderMock: NetworkProvider {
         path: String,
         method: HTTPMethod,
         parameters: Parameters?,
-        headers: HTTPHeaders
+        headers: HTTPHeaders,
+        anonimous: Bool,
     ) async throws -> Data {
         requestCallResults.append((path, method, parameters, headers))
         return try await onRequest(path, method, parameters, headers) as! Data

@@ -1,11 +1,6 @@
-//
-//  LoggerHandlerMock.swift
-//  LLIos
-//
-//  Created by Evgeniy Yolchev on 05.11.2025.
-//
-
 import Foundation
+
+#if DEBUG
 
 /// Mock implementation of LoggerHandler for testing purposes.
 ///
@@ -94,3 +89,4 @@ public actor LoggerHandlerMock: LoggerHandler {
         setOnLog(nil)
     }
 }
+#endif

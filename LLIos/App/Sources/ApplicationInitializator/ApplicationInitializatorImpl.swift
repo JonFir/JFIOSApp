@@ -64,7 +64,9 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
     /// when finished to check if all required tasks have completed.
     ///
     func finalizeAppRun() {
+        logger?.info("AppInit.finalizeAppRun", category: .system, module: "App")
         Task {
+            self.logger?.debug("AppInit.Task.Settings.Started", category: .system, module: "App")
             self.settingsListener = await settingsProvider?.subscribe { @MainActor [weak self] settings in
                 guard
                     let self,
@@ -79,6 +81,7 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
         }
         
         Task {
+            self.logger?.debug("AppInit.Task.AccountLoad.Started", category: .system, module: "App")
             self.currentAccount = await accountStorage?.load()
             self.completedAsyncSteps.insert(.account)
             self.appliactionWillConfigured()
@@ -107,10 +110,19 @@ final class ApplicationInitializatorImpl: ApplicationInitializator {
             !isAppliactionConfigured,
             completedAsyncSteps.count == ApplicationInitializatorAsyncSteps.allCases.count
         else { return }
-        
+
+        let isLgginded = currentAccount != nil
+
+        self.logger?.info(
+            "AppInit.AppliactionWillConfigured",
+            category: .system,
+            module: "App",
+            parameters: ["isLgginded": isLgginded]
+        )
+
         isAppliactionConfigured = true
         
-        if currentAccount != nil {
+        if isLgginded {
             Container.shared.uiLoginViewController()?.replaceAppFlow()
         } else {
             Container.shared.uiLoginViewController()?.replaceAppFlow()

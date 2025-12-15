@@ -25,7 +25,8 @@ class AccountStorageTests {
             id: "test-user-123",
             email: "test@example.com",
             name: "Test User",
-            token: "test-token-secret"
+            token: "test-token-secret",
+            expiration: Date.now.timeIntervalSince1970 + 60 * 60 * 24
         )
         keychainMock = KeychainStorageMock()
         Container.shared.keychainStorageWitService.register { [keychainMock] _ in
@@ -187,7 +188,8 @@ class AccountStorageTests {
             id: "new-user-456",
             email: "new@example.com",
             name: "New User",
-            token: "new-token-secret"
+            token: "new-token-secret",
+            expiration: Date.now.timeIntervalSince1970 + 60 * 60 * 24
         )
         
         await storage.save(account: newAccount)

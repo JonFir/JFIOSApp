@@ -14,6 +14,7 @@ public actor AccountStorageMock: AccountStorage {
     public init() {}
     
     public func save(account: Account) async {
+        loadResult = account
         saveCalls.append(account)
     }
     
