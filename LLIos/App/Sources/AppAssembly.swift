@@ -12,6 +12,7 @@ import AccountStorageImpl
 import LibNetworkImpl
 import UILoginImpl
 import UIDashbordImpl
+import UIRegistrationImpl
 
 private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [
     LoggerAutoRegister(),
@@ -24,6 +25,7 @@ private nonisolated(unsafe) let autoRegisters: [AutoRegistering] = [
     UILoginAutoRegister(),
     LibNetworkAutoRegister(),
     UIDashboardAutoRegister(),
+    UIRegistrationAutoRegister(),
 ]
 
 extension Container: @retroactive AutoRegistering {
